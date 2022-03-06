@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-03-06T16:11:32.982Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15" etag="Zowto7m1VEyeIP4mre-H" version="16.6.4" type="github">
+<mxfile host="app.diagrams.net" modified="2022-03-06T16:18:15.771Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15" etag="To2NGgKNHfkBjf5CxUny" version="16.6.4" type="github">
   <diagram name="Page-1" id="13e1069c-82ec-6db2-03f1-153e76fe0fe0">
-    <mxGraphModel dx="599" dy="443" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="2339" background="none" math="0" shadow="0">
+    <mxGraphModel dx="471" dy="348" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="2339" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -82,8 +82,26 @@
         <mxCell id="kd9hnM9UEGJ-Ht8Q5I6m-22" value="Cinema Manager&lt;br&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
           <mxGeometry x="630" y="1130" width="30" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="kd9hnM9UEGJ-Ht8Q5I6m-28" value="Accounts Manager" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="1030" y="210" width="30" height="60" as="geometry" />
+        <mxCell id="kd9hnM9UEGJ-Ht8Q5I6m-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;" edge="1" parent="1" source="kd9hnM9UEGJ-Ht8Q5I6m-28" target="kd9hnM9UEGJ-Ht8Q5I6m-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kd9hnM9UEGJ-Ht8Q5I6m-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="kd9hnM9UEGJ-Ht8Q5I6m-28" target="kd9hnM9UEGJ-Ht8Q5I6m-31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kd9hnM9UEGJ-Ht8Q5I6m-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;fontColor=#FF0D0D;" edge="1" parent="1" source="kd9hnM9UEGJ-Ht8Q5I6m-28" target="kd9hnM9UEGJ-Ht8Q5I6m-33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kd9hnM9UEGJ-Ht8Q5I6m-28" value="&lt;font style=&quot;font-size: 12px&quot;&gt;Accounts Manager&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 9px&quot; color=&quot;#ff3333&quot;&gt;Accounts Department&lt;/font&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="960" y="80" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="kd9hnM9UEGJ-Ht8Q5I6m-29" value="&lt;font style=&quot;font-size: 12px&quot;&gt;Add Account for previously registered Club&lt;br&gt;&lt;/font&gt;&lt;br&gt;(&lt;font color=&quot;#ff0d0d&quot;&gt;unique id given to account&lt;/font&gt;)" style="ellipse;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="70" width="150" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="kd9hnM9UEGJ-Ht8Q5I6m-31" value="&lt;font style=&quot;font-size: 12px&quot;&gt;Add Account Discount&amp;nbsp;&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="210" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="kd9hnM9UEGJ-Ht8Q5I6m-33" value="&lt;font style=&quot;font-size: 12px&quot;&gt;Update Account&lt;br&gt;&lt;/font&gt;&lt;font color=&quot;#ff3333&quot; style=&quot;font-size: 9px&quot;&gt;provide list of all accounts&lt;br&gt;manager selects account to update&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="320" width="170" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
