@@ -1,6 +1,5 @@
 from django.db import models
-
-from django.db import models
+import uuid
 
 class TicketType(models.Model):
     ticket = models.CharField(max_length=20, null=False)
@@ -16,7 +15,7 @@ class CardDetails(models.Model):
     expiry_date = models.DateField(null=False)
 
 class Account(models.Model):
-    account_title = models.CharField(null=False)
+    account_title = models.CharField(max_length=50, null=False)
     account_discount = models.BigIntegerField(null=True)
     card_details_id = models.ForeignKey(CardDetails, on_delete=models.PROTECT)
 
@@ -32,12 +31,12 @@ class Address(models.Model):
 
 class ContactDetails(models.Model):
     landline = models.CharField(max_length=20)
-    mobile = models.IntegerField(max_length=20)
+    mobile = models.IntegerField()
     email = models.EmailField(max_length=254)
 
 class Club(models.Model):
     club_name = models.CharField(max_length=100, null=False)
-    club_guid = models.UUIDField(_(""))
+    club_guid = models.UUIDField(default=uuid.uuid4)
     address_id = models.ForeignKey(Address, on_delete=models.CASCADE)
     contact_details_id = models.ForeignKey(ContactDetails, on_delete=models.CASCADE)
 
@@ -45,7 +44,7 @@ class Transaction(models.Model):
     date_of_payment = models.DateTimeField(null=False)
     booking_id = models.ForeignKey(Booking, on_delete=models.PROTECT)
     account_id = models.ForeignKey(Account, on_delete=models.PROTECT)
-    club_id = models.ForeignKey(to, on_delete)
+    club_id = models.ForeignKey(Club, on_delete=models.PROTECT)
 
 class LoginAccount(models.Model):
     username = models.EmailField(max_length=254)
@@ -57,7 +56,7 @@ class Representative(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     dob = models.DateField(auto_now=False, auto_now_add=False)
-    unique_number = models.UUIDField(_(""))
+    unique_number = models.UUIDField(default=uuid.uuid4)
     unique_password = models.CharField(max_length=50)
     login_account_id = models.ForeignKey(LoginAccount, on_delete=models.CASCADE)
 
@@ -65,8 +64,8 @@ class Roles(models.Model):
     roles = models.CharField(max_length=50)
 
 class AccountRole(models.Model):
-    role_id = models.ForeignKey(Roles, on_delete=models.PROTECT)
     login_account_id = models.ForeignKey(LoginAccount, on_delete=models.CASCADE)
+    role_id = models.ForeignKey(Roles, on_delete=models.PROTECT)
 
 class ClubRepresentative(models.Model):
     club_id = models.ForeignKey(Club, on_delete=models.PROTECT)
@@ -88,10 +87,6 @@ class ScreenShowings(models.Model):
 
 class BookedTickets(models.Model):
     booking_id = models.ForeignKey(Booking, on_delete=models.CASCADE)
-    ticket_type_id = models.ForeignKey(tick, on_delete=models.CASCADE)
+    ticket_type_id = models.ForeignKey(TicketType, on_delete=models.CASCADE)
     screen_showing_id = models.ForeignKey(Showing, on_delete=models.CASCADE)
-
-class AccountRole(models.Model):
-    login_account_id = models.ForeignKey(LoginAccount, on_delete=models.CASCADE)
-    account_role_id = models.ForeignKey(Roles, on_delete=models.CASCADE)
 
