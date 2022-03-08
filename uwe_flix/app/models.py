@@ -46,17 +46,17 @@ class Transaction(models.Model):
     club_id = models.ForeignKey(to, on_delete)
 
 class LoginAccount(models.Model):
-    username = models.EmailField(_(""), max_length=254)
-    password = models.CharField(_(""), max_length=50)
-    createdOn = models.DateTimeField(_(""), auto_now=False, auto_now_add=False)
-    last_logged_in = models.DateTimeField(_(""), auto_now=False, auto_now_add=False)
+    username = models.EmailField(max_length=254)
+    password = models.CharField(max_length=50)
+    createdOn = models.DateTimeField(auto_now=False, auto_now_add=False)
+    last_logged_in = models.DateTimeField(auto_now=False, auto_now_add=False)
 
 class Representative(models.Model):
-    first_name = models.CharField(_(""), max_length=50)
-    last_name = models.CharField(_(""), max_length=50)
-    dob = models.DateField(_(""), auto_now=False, auto_now_add=False)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    dob = models.DateField(auto_now=False, auto_now_add=False)
     unique_number = models.UUIDField(_(""))
-    unique_password = models.CharField(_(""), max_length=50)
+    unique_password = models.CharField(max_length=50)
     login_account_id = models.ForeignKey(LoginAccount, on_delete=models.CASCADE)
 
 class Roles(models.Model):
@@ -81,8 +81,8 @@ class Screen(models.Model):
     screen_seats_number = models.IntegerField()
 
 class ScreenShowings(models.Model):
-    screen_id = models.ForeignKey(Screen, verbose_name=_(""), on_delete=models.CASCADE)
-    showing_id = models.ForeignKey(Showing, verbose_name=_(""), on_delete=models.CASCADE)
+    screen_id = models.ForeignKey(Screen, on_delete=models.CASCADE)
+    showing_id = models.ForeignKey(Showing, on_delete=models.CASCADE)
 
 class BookedTickets(models.Model):
     booking_id = models.ForeignKey(Booking, on_delete=models.CASCADE)
