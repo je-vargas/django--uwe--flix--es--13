@@ -1,9 +1,8 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.views.generic.base import TemplateView
 
-def home(request):
-    return HttpResponse("<h1>Home response is currently working</h1>")
+template_root = "web_app"
 
-
-def club_rep_login(request):
-    return HttpResponse("the club rep url works")
+class HomePageView(TemplateView):
+    template_name = f'{template_root}/home.html'
+class AboutPageView(TemplateView):
+    template_name = f'{template_root}/about.html'
