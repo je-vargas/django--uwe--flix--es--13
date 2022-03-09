@@ -5,10 +5,10 @@ class TicketType(models.Model):
     ticket = models.CharField(max_length=20, null=False)
 
 class Film(models.Model):
-    title = models.CharField(max_length=20, null=False)
-    age_rating = models.BigIntegerField()
-    duration = models.CharField(max_length=10)
-    film_description = models.CharField(max_length=20, null=False)
+    title = models.CharField(max_length=50, null=False)
+    age_rating = models.CharField(max_length=20)
+    duration = models.CharField(max_length=30)
+    film_description = models.CharField(max_length=500, null=False)
     release_date = models.DateField()
 class CardDetails(models.Model):
     card_number = models.BigIntegerField(null=False)
