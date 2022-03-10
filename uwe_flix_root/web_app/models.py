@@ -10,6 +10,9 @@ class Film(models.Model):
     duration = models.CharField(max_length=30)
     film_description = models.CharField(max_length=500, null=False)
     release_date = models.DateField()
+    def __str__(self):
+        return self.title[:50]
+    
 class CardDetails(models.Model):
     card_number = models.BigIntegerField(null=False)
     expiry_date = models.DateField(null=False)
