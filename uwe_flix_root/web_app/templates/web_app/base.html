@@ -1,6 +1,24 @@
-<header>
-    <a href="{% url 'home' %}">Home</a> | <a href="{% url 'about' %}">About</a>
-</header>
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'web_app/base.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:􏰂􏰁􏰁" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <h3>testing css link up works</h3>
+        <a href="{% url 'home' %}">Home</a> | <a href="{% url 'about' %}">About</a>
+    </header>
+    <div>
+        {% block content %}
+        {% endblock content %} 
+    </div>
+</body>
+</html>
 
-{% block content %}
-{% endblock content %}
+
