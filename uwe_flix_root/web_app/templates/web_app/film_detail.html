@@ -1,0 +1,13 @@
+{% extends 'web_app/base.html' %}
+
+{% block content %}
+    <div class="post-entry">
+           
+        <h2>{{ film.title }}</h2>
+        <p>{{ film.film_description }}</p>
+        <p>{{ film.age_rating }}</p>
+        <p>{{ film.duration }}</p>
+           
+        </ul>
+    </div>
+{% endblock %}
