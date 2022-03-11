@@ -7,7 +7,7 @@
         <p>{{ film.film_description }}</p>
         <p>{{ film.age_rating }}</p>
         <p>{{ film.duration }}</p>
-           
-        </ul>
+        
+        <a href={% url 'film_update' film.pk %}>Edit Film Details</a>
     </div>
 {% endblock %}
