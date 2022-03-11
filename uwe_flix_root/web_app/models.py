@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 import uuid
 
 class TicketType(models.Model):
@@ -12,7 +13,10 @@ class Film(models.Model):
     release_date = models.DateField()
     def __str__(self):
         return self.title[:50]
-    
+
+    def get_absolute_url(self):
+        return reverse("film_detail", args=[str(self.id)])
+
 class CardDetails(models.Model):
     card_number = models.BigIntegerField(null=False)
     expiry_date = models.DateField(null=False)
