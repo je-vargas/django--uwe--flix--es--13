@@ -11,9 +11,12 @@ class Film(models.Model):
     duration = models.CharField(max_length=30)
     film_description = models.CharField(max_length=500, null=False)
     release_date = models.DateField()
+    
+    #* get_absolute_url needs to be added to every model along with __str__
     def __str__(self):
         return self.title[:50]
 
+    #* get_absolute_url - redirects after submitting a from to film detail
     def get_absolute_url(self):
         return reverse("film_detail", args=[str(self.id)])
 
