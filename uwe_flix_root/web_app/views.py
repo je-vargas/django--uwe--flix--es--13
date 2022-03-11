@@ -1,5 +1,5 @@
 from django.views.generic.base import TemplateView
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from .models import Film
 
 template_root = "web_app"
@@ -12,6 +12,11 @@ class HomePageView(ListView):
 class FilmDetailView(DetailView):
     model = Film
     template_name = f'{template_root}/film_detail.html'
+
+class FilmNew(CreateView):
+    model = Film
+    template_name = f'{template_root}/film_new.html'
+    fields = '__all__'
 
 class AboutPageView(TemplateView):
     template_name = f'{template_root}/about.html'
