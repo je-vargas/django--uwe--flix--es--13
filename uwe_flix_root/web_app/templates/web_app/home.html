@@ -1,0 +1,16 @@
+{% extends 'web_app/base.html' %}
+
+{% block content %}
+    <div>
+        <h2>Homepage Films</h2>
+        <ul>
+            {% for film in all_films  %}
+                <li><h3><a href="{% url 'film_detail' film.pk %}">{{ film.title }}</a></h3></li>
+                <li>{{ film.age_rating }}</li>
+                <li>{{ film.duration }}</li>
+                <li>{{ film.film_description }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+

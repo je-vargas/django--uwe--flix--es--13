@@ -8,7 +8,7 @@
             "name": "Python: Django",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/uwe_flix/manage.py",
+            "program": "${workspaceFolder}/uwe_flix_root/manage.py",
             "args": [
                 "runserver"
             ],
