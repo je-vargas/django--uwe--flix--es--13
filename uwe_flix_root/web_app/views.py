@@ -1,6 +1,8 @@
 from django.views.generic.base import TemplateView
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.urls import reverse_lazy, reverse
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Film
+
 
 template_root = "web_app"
 
@@ -13,16 +15,19 @@ class FilmDetailView(DetailView):
     model = Film
     template_name = f'{template_root}/film_detail.html'
 
-class FilmNew(CreateView):
+class FilmNewView(CreateView):
     model = Film
     template_name = f'{template_root}/film_new.html'
     fields = '__all__'
 
-class FilmUpdate(UpdateView):
+class FilmUpdateView(UpdateView):
     model = Film
     template_name = template_name = f'{template_root}/film_update.html'
-    # fields = [""]
     fields = '__all__'
+class FilmDeleteView(DeleteView):
+    model = Film
+    template_name = template_name = f'{template_root}/film_delete.html'
+    success_url = reverse_lazy('home')
 
 class AboutPageView(TemplateView):
     template_name = f'{template_root}/about.html'
