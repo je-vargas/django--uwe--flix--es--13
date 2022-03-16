@@ -50,7 +50,7 @@ class FilmTest(TestCase):
         response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'One of the best test case scenarios')
-        self.assertTemplateUsed(response, 'web_app/home.html')
+        self.assertTemplateUsed(response, 'films/home.html')
 
     def test_film_detail_view(self):
         response = self.client.get("/films/1/")
