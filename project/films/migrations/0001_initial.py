@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('club_name', models.CharField(max_length=100)),
                 ('club_guid', models.UUIDField(default=uuid.uuid4)),
-                ('address_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='web_app.address')),
+                ('address_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='films.address')),
             ],
         ),
         migrations.CreateModel(
@@ -112,9 +112,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('date_of_payment', models.DateTimeField()),
-                ('account_id', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='web_app.account')),
-                ('booking_id', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='web_app.booking')),
-                ('club_id', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='web_app.club')),
+                ('account_id', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='films.account')),
+                ('booking_id', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='films.booking')),
+                ('club_id', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='films.club')),
             ],
         ),
         migrations.CreateModel(
@@ -123,15 +123,15 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('date', models.DateField()),
                 ('time', models.TimeField()),
-                ('film_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='web_app.film')),
+                ('film_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='films.film')),
             ],
         ),
         migrations.CreateModel(
             name='ScreenShowings',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('screen_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='web_app.screen')),
-                ('showing_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='web_app.showing')),
+                ('screen_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='films.screen')),
+                ('showing_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='films.showing')),
             ],
         ),
         migrations.CreateModel(
@@ -143,42 +143,42 @@ class Migration(migrations.Migration):
                 ('dob', models.DateField()),
                 ('unique_number', models.UUIDField(default=uuid.uuid4)),
                 ('unique_password', models.CharField(max_length=50)),
-                ('login_account_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='web_app.loginaccount')),
+                ('login_account_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='films.loginaccount')),
             ],
         ),
         migrations.CreateModel(
             name='ClubRepresentative',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('club_id', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='web_app.club')),
-                ('representative_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='web_app.representative')),
+                ('club_id', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='films.club')),
+                ('representative_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='films.representative')),
             ],
         ),
         migrations.AddField(
             model_name='club',
             name='contact_details_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='web_app.contactdetails'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='films.contactdetails'),
         ),
         migrations.CreateModel(
             name='BookedTickets',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('booking_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='web_app.booking')),
-                ('screen_showing_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='web_app.showing')),
-                ('ticket_type_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='web_app.tickettype')),
+                ('booking_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='films.booking')),
+                ('screen_showing_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='films.showing')),
+                ('ticket_type_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='films.tickettype')),
             ],
         ),
         migrations.CreateModel(
             name='AccountRole',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('login_account_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='web_app.loginaccount')),
-                ('role_id', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='web_app.roles')),
+                ('login_account_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='films.loginaccount')),
+                ('role_id', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='films.roles')),
             ],
         ),
         migrations.AddField(
             model_name='account',
             name='card_details_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='web_app.carddetails'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='films.carddetails'),
         ),
     ]
