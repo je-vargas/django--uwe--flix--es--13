@@ -31,8 +31,8 @@ ALLOWED_HOSTS = ["localhost","127.0.0.1"]
 # Application definition
 
 INSTALLED_APPS = [
-    'web_app.apps.WebAppConfig',
-    'users.apps.UsersConfig',
+    'films',
+    'users',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -118,7 +118,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'web_app/static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'films/static')]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
