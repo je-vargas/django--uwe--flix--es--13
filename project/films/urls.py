@@ -12,7 +12,5 @@ urlpatterns = [
     path("films/<int:pk>/delete/", FilmDeleteView.as_view(), name="film_delete"),
     path("films/<int:pk>/update/", FilmUpdateView.as_view(), name="film_update"),
     path("films/<int:pk>/", FilmDetailView.as_view(), name="film_detail"),
-    path("films/new/", FilmNewView.as_view(), name="film_new"),
-    path("about/", AboutPageView.as_view(), name="about"),
-    path("", HomePageView.as_view(), name="home")
+    path("films/new/", FilmNewView.as_view(), name="film_new")
 ]
