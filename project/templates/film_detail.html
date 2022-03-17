@@ -9,8 +9,8 @@
             <p>{{ film.age_rating }}</p>
             <p>{{ film.duration }}</p>
             
-            <a href={% url 'film_update' film.pk %}>Edit Film Details</a>
-            <a href={% url 'film_delete' film.pk %}>Delete Film</a>
+            <a href={% url 'film_update' film.pk %} class="btn btn-secondary" role="button">Edit Film Details</a>
+            <a href={% url 'film_delete' film.pk %} class="btn btn-danger" role="button">Delete Film</a>
         </div>
     </div>
 {% endblock %}
