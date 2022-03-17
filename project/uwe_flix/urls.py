@@ -23,9 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('users/', include('django.contrib.auth.urls')),
-    path('films/', include('films.urls')),
+    path('', include('films.urls')),
     path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico')) #: using this line to stop favicon error
 ]
 
