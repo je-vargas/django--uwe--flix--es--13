@@ -1,26 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-    {% if user.is_authenticated %}
-        <p>Hi {{ user.username }}</p>
-        <p><a href={% url 'logout' %}>Logout</a></p>
-    {% else %}
-        <p>You are not logged in</p>
-        <a href={% url 'login' %}>Login</a>
-        <a href={% url 'signup' %}>SignUp</a>
-    {% endif %}
-
-    <div>
-        <h2>Homepage Films</h2>
-        <ul>
-            {% for film in all_films  %}
-                <li><h3><a href="{% url 'film_detail' film.pk %}">{{ film.title }}</a></h3></li>
-                <li>{{ film.age_rating }}</li>
-                <li>{{ film.duration }}</li>
-                <li>{{ film.film_description }}</li>
-            {% endfor %}
-        </ul>
+    <div class='container'>
+        <h1 class="display-4 text-center">Films</h1>
+        <br/>
+        {% for film in all_films %}
+            <div class="card">
+                <p class="card-header lead ">Book your ticket now!</p>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ film.title }}</h5>
+                        <p class="card-text">{{ film.film_description }}.</p>
+                        <p class="card-text">{{ film.duration }}.</p>
+                        <a href="{% url 'film_detail' film.pk %}" class="btn btn-primary">More details</a>
+                    </div>
+            </div>
+            <br/>
+        {% endfor %}
     </div>
 {% endblock %}
 
