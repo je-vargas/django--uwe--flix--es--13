@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic import RedirectView
-from django.views.generic.base import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
