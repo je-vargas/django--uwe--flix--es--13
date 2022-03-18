@@ -13,12 +13,12 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Showings</a>
         </li>
-        {% if user.is_authenticated %}
+        {% comment %} {% if user.is_authenticated %} {% endcomment %}
             {% comment %} <p>Hi {{ user.username }}</p> {% endcomment %}
             <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>
             </li>
-        {% else %}
+        {% comment %} {% else %} {% endcomment %}
             {% comment %} <p>You are not logged in</p> {% endcomment %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'login' %}">Login</a>
@@ -26,7 +26,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'signup' %}">Signup</a>
             </li>
-        {% endif %}
+        {% comment %} {% endif %} {% endcomment %}
         
       </ul>
       <form class="d-flex">
