@@ -10,23 +10,28 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Showings</a>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Films
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'home' %}">All Films</a></li>
+            <li><a class="dropdown-item" href="{% url 'film-new' %}">Add Film</a></li>
+          </ul>
         </li>
-        {% comment %} {% if user.is_authenticated %} {% endcomment %}
-            {% comment %} <p>Hi {{ user.username }}</p> {% endcomment %}
+        {% if user.is_authenticated %}
             <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'logout-user' %}">Logout</a>
             </li>
-        {% comment %} {% else %} {% endcomment %}
-            {% comment %} <p>You are not logged in</p> {% endcomment %}
+        {% else %} 
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'login' %}">Login</a>
+                <a class="nav-link" href="{% url 'login-user' %}">Login</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'signup' %}">Signup</a>
+                <a class="nav-link" href="{% url 'register' %}">Register</a>
             </li>
-        {% comment %} {% endif %} {% endcomment %}
+        {% endif %}
         
       </ul>
       <form class="d-flex">

@@ -1,28 +1,22 @@
 {% extends 'base.html' %}
 
+{% block title %}Login{% endblock title %}
+
 {% block content %}
-    
-    {% comment %} <h2>Log in</h2>
 
-    <form method="post">
-         
-        {{ form.as_p }}
-        <input type="submit" value="Submit" class="btn btn-secondary"/>
-    </form> {% endcomment %}
-               
-    
+    <h1 class="display-4 text-center">Login</h1>
 
-    <form>{% csrf_token %}
+    <form  method="post" class="login-form">{% csrf_token %}
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" name="username" aria-describedby="emailHelp">
+            <input type="text" class="form-control" name="username" aria-describedby="emailHelp">
             <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
         </div>
         <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Password</label>
             <input type="password" class="form-control" name="password">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <input type="submit" value="Submit" class="btn btn-primary">
     </form>
     
 {% endblock content %}
