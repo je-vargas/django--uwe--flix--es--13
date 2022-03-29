@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class='container'>
+        <div class="post-entry">
+            
+            <h1 class='display-3'>{{ film.title }}</h1>
+            <p>{{ film.film_description }}</p>
+            <p>{{ film.age_rating }}</p>
+            <p>{{ film.duration }}</p>
+            
+            <a href={% url 'film_update' film.pk %}>Edit Film Details</a>
+            <a href={% url 'film_delete' film.pk %}>Delete Film</a>
+        </div>
+    </div>
+{% endblock %}
