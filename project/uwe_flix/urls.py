@@ -20,8 +20,8 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', include('users.urls')),
     path('users/', include('django.contrib.auth.urls')),
+    path('users/', include('users.urls')),
     path('', include('films.urls')),
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico')) #: using this line to stop favicon error
 ]
