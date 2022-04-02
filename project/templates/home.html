@@ -11,7 +11,9 @@
                         <h5 class="card-title">{{ film.title }}</h5>
                         <p class="card-text">{{ film.film_description }}.</p>
                         <p class="card-text">{{ film.duration }}.</p>
-                        <a href="{% url 'film_detail' film.pk %}" class="btn btn-primary">More details</a>
+                    </div>
+                    <div class="card-footer">
+                            <a href="{% url 'film-detail' film.pk %}" class="btn btn-primary">More details</a>
                     </div>
             </div>
             <br/>
