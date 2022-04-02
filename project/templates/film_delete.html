@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h3>Delete Film</h3>
+    <h1 class="display-4 text-center">Delete Film</h1>
 
     <form action="" method="post">{% csrf_token %}
         <p>This will permanently delete "{{ film.title }}" from the Database, proceed?</p>
