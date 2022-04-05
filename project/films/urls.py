@@ -21,7 +21,7 @@ urlpatterns = [
 
     path("showings/<int:pk>/", ShowingDetailView.as_view(), name="showing-details"),
     path("showings/new", ShowingsNewView.as_view(), name="showing-new"),
-    path("showings", ShowingsAllView.as_view(), name="showing-all"),
+    path("showings/", ShowingsAllView.as_view(), name="showing-all"),
     
     # path("showing/<int:pk>/delete/", .as_view(), name="film-delete"),
     # path("showing/<int:pk>/update/", .as_view(), name="film-update"),
