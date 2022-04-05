@@ -17,7 +17,7 @@ class Film(models.Model):
     
     #* get_absolute_url needs to be added to every model along with __str__
     def __str__(self):
-        return self.title[:50]+ " " + self.age_rating
+        return self.title[:50]
 
     #* get_absolute_url - redirects after submitting a from to film detail
     def get_absolute_url(self):
@@ -109,7 +109,7 @@ class AccountRole(models.Model):
 
 class Showing(models.Model):
     date = models.DateField(auto_now=False, auto_now_add=False)
-    time = models.TimeField(auto_now=False, auto_now_add=False)
+    time = models.CharField(max_length=50)
     film_id = models.ForeignKey(Film, on_delete=models.CASCADE)
 
     def __str__(self):
