@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class='container'>
+        <div class="post-entry">
+            
+            <h1 class='display-3'>{{ showing.title }}</h1>
+            <p>{{ showin.film_id }}</p>
+            <p>{{ showing.time }}</p>
+            <p>{{ showing.time }}</p>
+            
+            <a href={% url '' showing.pk %} class="btn btn-secondary" role="button">Edit Showing</a>
+            <a href={% url '' showing.pk %} class="btn btn-danger" role="button">Delete Showing</a>
+        </div>
+    </div>
+{% endblock %}

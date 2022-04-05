@@ -4,17 +4,17 @@
     <div class='container'>
         <h1 class="display-4 text-center">Films</h1>
         <br/>
-        {% for film in all_films %}
+        {% for showings in all_showings %}
             <div class="card">
-                <p class="card-header lead ">Book your ticket now!</p>
                     <div class="card-body">
-                        <h5 class="card-title">{{ film.title }}</h5>
+                        {{ showings }}
+                        {% comment %} <h5 class="card-title">{{ film.title }}</h5>
                         <p class="card-text">{{ film.film_description }}.</p>
-                        <p class="card-text">{{ film.duration }}.</p>
+                        <p class="card-text">{{ film.duration }}.</p> {% endcomment %}
                     </div>
-                    <div class="card-footer">
+                    {% comment %} <div class="card-footer">
                             <a href="{% url 'film-detail' film.pk %}" class="btn btn-primary">More details</a>
-                    </div>
+                    </div> {% endcomment %}
             </div>
             <br/>
         {% endfor %}
