@@ -30,8 +30,10 @@ class NewFilmsForm(forms.ModelForm):
 
 
 class NewShowingsForm(forms.ModelForm):
-    time = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
-    date = forms.TimeField(required=True, widget=DateCustomWidget(attrs={'class':'form-control'}))
+    time_regex = RegexValidator('^([0-1][0-9]|[2][0-3]):([0-5][0-9])$', message='Enter time as HH:MM, e.g. 13:20')
+
+    time = forms.CharField(max_length=50, required=False, validators=[time_regex] ,widget=forms.TextInput(attrs={'class':'form-control'}))
+    date = forms.DateField(required=False, widget=DateCustomWidget(attrs={'class':'form-control'}))
     
     class Meta:
         model = Showing
