@@ -3,6 +3,7 @@ from django.core.exceptions import PermissionDenied
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
+from django.shortcuts import render, redirect
 from .models import Film, Showing
 from .forms import NewFilmsForm, NewShowingsForm
 
@@ -39,13 +40,38 @@ class FilmsDeleteView(LoginRequiredMixin, DeleteView):
     #         raise PermissionDenied
     #     return super().dispatch(request, *args, **kwargs)
 
+def showingsNewView(request):
+
+    form = NewShowingsForm(request.POST or None)
+    
+    if request.method == "POST":
+        
+        if form.is_valid():
+            date = form.cleaned_data['date'],
+            time = form.cleaned_data['time'],
+            film_id = form.cleaned_data['film_id']
+
+            print(f"time: {time}\ndate: {date}\nfilm: {film_id}")
+
+            showing = form.save(commit=False)
+            
+            print(f"obj: {showing}")
+            showing.save()
+
+            return redirect('showing-all')
+        else:
+            return render(request, 'showing_new.html', {
+                "form":form,
+                "film_id":request.POST.get('form-0-film-id'),
+                "time":request.POST.get('form-1-time'),
+                "date":request.POST.get('form-2-date')
+                })
+        
+    else:
+        form = NewShowingsForm()
+        return render(request, 'showing_new.html', {"form":form})
 
 
-class ShowingsNewView(LoginRequiredMixin, CreateView):
-    model = Showing
-    form_class = NewShowingsForm
-    template_name = 'showing_new.html'
-    success_url = reverse_lazy('showing-all')
 
 class ShowingsAllView(ListView):
     model = Showing
