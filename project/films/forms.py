@@ -29,6 +29,8 @@ class NewFilmsForm(forms.ModelForm):
         self.fields['release_date'].widget.attrs['class'] = 'form-control'
 
 
+class UpdateFilmForm(NewFilmsForm): pass
+
 class NewShowingsForm(forms.ModelForm):
     time_regex = RegexValidator('^([0-1][0-9]|[2][0-3]):([0-5][0-9])$', message='Enter time as HH:MM, e.g. 13:20')
 
@@ -46,4 +48,4 @@ class NewShowingsForm(forms.ModelForm):
         self.fields['date'].widget.attrs['class'] = 'form-control'
 
 
-    
+class UpdateShowingForm(NewShowingsForm): pass
