@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="display-4 text-center">Delete Showing</h1>
+
+    <form action="" method="post">{% csrf_token %}
+        <p>This will permanently delete the showing from the Database, proceed?</p>
+        <p>{{ showing.film_id }}</p>
+        <p>"{{ showing.time }}"</p>
+        <p>{{ showing.date }}</p>
+        <input type="submit" value="Confirm" class='btn btn-primary'/>
+    </form>
+
+{% endblock content %}
