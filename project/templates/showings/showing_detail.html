@@ -11,6 +11,7 @@
             
             <a href={% url 'showing-update' showing.pk %} class="btn btn-secondary" role="button">Edit Showing</a>
             <a href={% url 'showing-delete' showing.pk %} class="btn btn-danger" role="button">Delete Showing</a>
+            <a href="{% url 'showing-all' %}" class="btn btn-dark">Back</a>
         </div>
     </div>
 {% endblock %}

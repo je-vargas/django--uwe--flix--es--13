@@ -9,6 +9,7 @@
         <p>"{{ showing.time }}"</p>
         <p>{{ showing.date }}</p>
         <input type="submit" value="Confirm" class='btn btn-primary'/>
+        <a href="{% url 'showing-details' showing.pk %}" class="btn btn-dark">Back</a>
     </form>
 
 {% endblock content %}
