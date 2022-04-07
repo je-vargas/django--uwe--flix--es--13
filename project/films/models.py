@@ -21,7 +21,7 @@ class Film(models.Model):
 
     #* get_absolute_url - redirects after submitting a from to film detail
     def get_absolute_url(self):
-        return reverse("film-detail", args=[str(self.id)])
+        return reverse("film-details", args=[str(self.id)])
 
 class CardDetails(models.Model):
     card_number = models.BigIntegerField(null=False)
