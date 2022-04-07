@@ -1,17 +1,18 @@
 from django.urls import path
-from .views import (
-    HomePageView,
-    AboutPageView,
-    FilmDetailView,
-    FilmNewView,
-    FilmUpdateView,
-    FilmDeleteView
-) 
+
+from . import views
 
 urlpatterns = [
-    path("films/<int:pk>/delete/", FilmDeleteView.as_view(), name="film-delete"),
-    path("films/<int:pk>/update/", FilmUpdateView.as_view(), name="film-update"),
-    path("films/<int:pk>/", FilmDetailView.as_view(), name="film-detail"),
-    path("films/new/", FilmNewView.as_view(), name="film-new"),
-    path("", HomePageView.as_view(), name="home")
+    path("", views.HomePageView.as_view(), name="home"),
+    path("films/<int:pk>/delete/", views.FilmsDeleteView.as_view(), name="film-delete"),
+    path("films/<int:pk>/update/", views.FilmsUpdateView.as_view(), name="film-update"),
+    path("films/<int:pk>/", views.FilmsDetailView.as_view(), name="film-details"),
+    path("films/new/", views.FilmsNewView.as_view(), name="film-new"),
+
+    path("showings/", views.ShowingsAllView.as_view(), name="showing-all"),
+    path("showing/<int:pk>/delete/", views.ShowingDeleteView.as_view(), name="showing-delete"),
+    path("showing/<int:pk>/update/", views.ShowingUpdateView.as_view(), name="showing-update"),
+    path("showings/<int:pk>/", views.ShowingDetailView.as_view(), name="showing-details"),
+    path("showings/new", views.showingsNewView, name="showing-new"),
+    
 ]
