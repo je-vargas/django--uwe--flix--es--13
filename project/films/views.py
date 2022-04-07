@@ -58,7 +58,7 @@ def showingsNewView(request):
             print(f"obj: {showing}")
             showing.save()
 
-            return redirect('showing-all')
+            return redirect('showings-all')
         else:
             return render(request, 'showing_new.html', {
                 "form":form,

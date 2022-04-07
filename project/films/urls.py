@@ -9,10 +9,10 @@ urlpatterns = [
     path("films/<int:pk>/", views.FilmsDetailView.as_view(), name="film-detail"),
     path("films/new/", views.FilmsNewView.as_view(), name="film-new"),
 
-    path("showings/<int:pk>/", views.ShowingDetailView.as_view(), name="showing-details"),
-    path("showings/new", views.showingsNewView, name="showing-new"),
+    path("showings/<int:pk>/", views.ShowingDetailView.as_view(), name="showings-details"),
+    path("showings/new", views.showingsNewView, name="showings-new"),
     # path("showings/new", views.ShowingsNewView.as_view(), name="showing-new"),
-    path("showings/", views.ShowingsAllView.as_view(), name="showing-all"),
+    path("showings/", views.ShowingsAllView.as_view(), name="showings-all"),
     
     # path("showing/<int:pk>/delete/", views.as_view(), name="film-delete"),
     # path("showing/<int:pk>/update/", views.as_view(), name="film-update"),
