@@ -14,5 +14,11 @@ urlpatterns = [
     path("showing/<int:pk>/update/", views.ShowingUpdateView.as_view(), name="showing-update"),
     path("showings/<int:pk>/", views.ShowingDetailView.as_view(), name="showing-details"),
     path("showings/new", views.showingsNewView, name="showing-new"),
+
+    path("screens/", views.ScreenAllView.as_view(), name="screen-all"),
+    path("screens/<int:pk>/delete/", views.ScreenDeleteView.as_view(), name="screen-delete"),
+    path("screens/<int:pk>/update/", views.ScreenUpdateView.as_view(), name="screen-update"),
+    path("screens/<int:pk>/", views.ScreenDetailView.as_view(), name="screen-details"),
+    path("screens/new", views.ScreenNewView.as_view(), name="screen-showing-new"),
     
 ]

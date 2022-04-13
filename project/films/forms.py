@@ -1,13 +1,12 @@
 from django import forms 
 from django.core.validators import RegexValidator
-from .models import Film, Showing
+from . import models as md
 
 class DateCustomWidget(forms.DateInput):
     input_type = 'date'
 
 class TimeCustomWidget(forms.TimeInput):
     input_type = 'time'
-
 
 class NewFilmsForm(forms.ModelForm):
     title = forms.CharField(max_length=300, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -17,7 +16,7 @@ class NewFilmsForm(forms.ModelForm):
     release_date = forms.DateField(required=True, widget=DateCustomWidget(attrs={'class':'form-control'}))
 
     class Meta:
-        model = Film
+        model = md.Film
         fields = ('title', 'film_description', 'age_rating', 'duration', 'release_date')
 
     def __init__(self, *args, **kwargs):
@@ -38,7 +37,7 @@ class NewShowingsForm(forms.ModelForm):
     date = forms.DateField(required=False, widget=DateCustomWidget(attrs={'class':'form-control'}))
     
     class Meta:
-        model = Showing
+        model = md.Showing
         fields = ('film_id','time', 'date')
 
     def __init__(self, *args, **kwargs):
@@ -47,5 +46,22 @@ class NewShowingsForm(forms.ModelForm):
         self.fields['time'].widget.attrs['class'] = 'form-control'
         self.fields['date'].widget.attrs['class'] = 'form-control'
 
-
 class UpdateShowingForm(NewShowingsForm): pass
+
+class NewScreenForm(forms.ModelForm):
+
+    screen_number = forms.IntegerField(required=True, widget=forms.NumberInput(attrs={'class':'form-control'}))
+    screen_seats_number = forms.IntegerField( required=True, widget=forms.NumberInput(attrs={'class':'form-control'}))
+
+    class Meta:
+        model = md.Screen
+        fields = ('screen_number', 'screen_seats_number', 'showings_id')
+
+    def __init__(self, *args, **kwargs):
+        super(NewScreenForm, self).__init__(*args, **kwargs)
+        self.fields['screen_number'].widget.attrs['class'] = 'form-control'
+        self.fields['screen_seats_number'].widget.attrs['class'] = 'form-control'
+        self.fields['showings_id'].widget.attrs['class'] = 'form-control'
+
+
+class UpdateScreenForm(NewScreenForm): pass
