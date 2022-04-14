@@ -4,7 +4,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect
-from .models import Film, Showing
+from .models import Film, Showing, Screen
 from . import forms
 
 class HomePageView(ListView):
@@ -30,7 +30,7 @@ class FilmsUpdateView(LoginRequiredMixin, UpdateView):
 
 class FilmsDeleteView(LoginRequiredMixin, DeleteView):
     model = Film
-    template_name = template_name = 'films/film_delete.html'
+    template_name = 'films/film_delete.html'
     success_url = reverse_lazy('home')
     login_url = 'login'
 
@@ -60,7 +60,7 @@ def showingsNewView(request):
 
             return redirect('showings-all')
         else:
-            return render(request, 'showings/showing_new.html', {
+            return render(request, 'screens/_new.html', {
                 "form":form,
                 "film_id":request.POST.get('form-0-film-id'),
                 "time":request.POST.get('form-1-time'),
@@ -70,8 +70,6 @@ def showingsNewView(request):
     else:
         form = forms.NewShowingsForm()
         return render(request, 'showings/showing_new.html', {"form":form})
-
-
 
 class ShowingsAllView(ListView):
     model = Showing
@@ -84,16 +82,48 @@ class ShowingDetailView(LoginRequiredMixin, DetailView):
 
 class ShowingUpdateView(LoginRequiredMixin, UpdateView):
     model = Showing
-    template_name = 'showings/showing_update.html'
-    success_url = reverse_lazy('showing-all')
+    template_name = 'showings/showing_detail_update.html'
+    success_url = reverse_lazy('screen-all')
     login_url = 'login'
     form_class=forms.UpdateShowingForm
 
 class ShowingDeleteView(LoginRequiredMixin, DeleteView):
     model = Showing
-    template_name = template_name = 'showings/showing_delete.html'
-    success_url = reverse_lazy('showing-all')
+    template_name = template_name = 'showings/showing_detail_delete.html'
+    success_url = reverse_lazy('screen-all')
     login_url = 'login'
+
+
+class ScreenAllView(ListView):
+    model = Screen
+    template_name = 'screens/screen_all.html'
+    context_object_name = "all_screens"
+    success_url = reverse_lazy('screen-all')
+
+class ScreenDetailView(LoginRequiredMixin, DetailView):
+    model = Screen
+    template_name = 'screens/screen_detail.html'
+    
+
+class ScreenUpdateView(LoginRequiredMixin, UpdateView):
+    model = Screen
+    template_name = 'screens/screen_update.html'
+    login_url = 'login'
+    form_class = forms.UpdateScreenForm
+    success_url = reverse_lazy('screen-all')
+
+class ScreenDeleteView(LoginRequiredMixin, DeleteView):
+    model = Screen
+    template_name = template_name = 'screens/screen_delete.html'
+    login_url = 'login'
+    success_url = reverse_lazy('screen-all')
+
+class ScreenNewView(LoginRequiredMixin, CreateView):
+    model = Screen
+    template_name = 'screens/screen_new.html'
+    login_url = 'login', 
+    form_class = forms.NewScreenForm
+    success_url = reverse_lazy('screen-all')
 
 class AboutPageView(TemplateView):
     template_name = 'about.html'
