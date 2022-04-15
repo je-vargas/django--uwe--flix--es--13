@@ -4,6 +4,12 @@
 
 {% block content %}
 
+    <style>
+        p{
+            font-size: 0.8rem;
+        }
+    </style>
+
     <h1 class="display-4 text-center">Login</h1>
 
     <form  method="post" class="login-form">{% csrf_token %}
@@ -18,5 +24,7 @@
         </div>
         <input type="submit" value="Submit" class="btn btn-primary">
     </form>
+    <br>
+    <p >Forgot your password? try resetting it <a href="{% url 'password_reset' %}">here</a></p>
     
 {% endblock content %}
