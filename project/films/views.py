@@ -6,6 +6,8 @@ from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect
 from .models import Film, Showing, Screen
 from . import forms
+from decorators import allowed_users
+
 
 class HomePageView(ListView):
     model = Film
@@ -16,30 +18,41 @@ class FilmsDetailView(DetailView):
     model = Film
     template_name = 'films/film_detail.html'
 
+    @allowed_users(['cinema manager, staff'])
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
 class FilmsNewView(LoginRequiredMixin, CreateView):
     model = Film
     template_name = 'films/film_new.html'
-    login_url = 'login', 
+    login_url = 'login-user'
     form_class = forms.NewFilmsForm
+
+    @allowed_users(['cinema manager, staff'])
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class FilmsUpdateView(LoginRequiredMixin, UpdateView):
     model = Film
     template_name = 'films/film_update.html'
-    login_url = 'login'
+    login_url = 'login-user'
     form_class = forms.UpdateFilmForm
+
+    @allowed_users(['cinema manager, staff'])
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class FilmsDeleteView(LoginRequiredMixin, DeleteView):
     model = Film
     template_name = 'films/film_delete.html'
     success_url = reverse_lazy('home')
-    login_url = 'login'
+    login_url = 'login-user'
 
-    # def dispatch(self, request, *args, **kwargs): 
-        #     obj = self.get_object()
-        #     if obj.author != self.request.user:
-        #         raise PermissionDenied
-        #     return super().dispatch(request, *args, **kwargs)
+    @allowed_users(['cinema manager, staff'])
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
+@allowed_users(['cinema manager', 'staff'])
 def showingsNewView(request):
 
     form = forms.NewShowingsForm(request.POST or None)
@@ -76,23 +89,38 @@ class ShowingsAllView(ListView):
     template_name = 'showings/showing_all.html'
     context_object_name = "all_showings"
 
+    @allowed_users(['cinema manager, staff'])
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
 class ShowingDetailView(LoginRequiredMixin, DetailView):
     model = Showing
     template_name = 'showings/showing_detail.html'
+
+    @allowed_users(['cinema manager, staff'])
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class ShowingUpdateView(LoginRequiredMixin, UpdateView):
     model = Showing
     template_name = 'showings/showing_detail_update.html'
     success_url = reverse_lazy('screen-all')
-    login_url = 'login'
+    login_url = 'login-user'
     form_class=forms.UpdateShowingForm
+
+    @allowed_users(['cinema manager, staff'])
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class ShowingDeleteView(LoginRequiredMixin, DeleteView):
     model = Showing
     template_name = template_name = 'showings/showing_detail_delete.html'
     success_url = reverse_lazy('screen-all')
-    login_url = 'login'
+    login_url = 'login-user'
 
+    @allowed_users(['cinema manager, staff'])
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class ScreenAllView(ListView):
     model = Screen
@@ -100,30 +128,50 @@ class ScreenAllView(ListView):
     context_object_name = "all_screens"
     success_url = reverse_lazy('screen-all')
 
+    @allowed_users(['cinema manager, staff'])
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
 class ScreenDetailView(LoginRequiredMixin, DetailView):
     model = Screen
     template_name = 'screens/screen_detail.html'
+
+    @allowed_users(['cinema manager, staff'])
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
     
 
 class ScreenUpdateView(LoginRequiredMixin, UpdateView):
     model = Screen
     template_name = 'screens/screen_update.html'
-    login_url = 'login'
+    login_url = 'login-user'
     form_class = forms.UpdateScreenForm
     success_url = reverse_lazy('screen-all')
+
+    @allowed_users(['cinema manager, staff'])
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class ScreenDeleteView(LoginRequiredMixin, DeleteView):
     model = Screen
     template_name = template_name = 'screens/screen_delete.html'
-    login_url = 'login'
+    login_url = 'login-user'
     success_url = reverse_lazy('screen-all')
+
+    @allowed_users(['cinema manager, staff'])
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class ScreenNewView(LoginRequiredMixin, CreateView):
     model = Screen
     template_name = 'screens/screen_new.html'
-    login_url = 'login', 
+    login_url = 'login-user', 
     form_class = forms.NewScreenForm
     success_url = reverse_lazy('screen-all')
+
+    @allowed_users(['cinema manager, staff'])
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class AboutPageView(TemplateView):
     template_name = 'about.html'

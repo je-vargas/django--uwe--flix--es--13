@@ -3,10 +3,13 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from .forms import RegisterUserForm
+from decorators import unauthenticated_user
 from django.urls import reverse_lazy
 from django.views import generic
 
-def login_user(request):
+
+@unauthenticated_user 
+def login_user(request):    
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -16,11 +19,11 @@ def login_user(request):
             return redirect('home')
         else:
             messages.success(request, "There was an error login in, try again")
-            return redirect('login')
+            return redirect('login-user')
     else: 
         return render(request, 'registration/login.html', {})
 
-def logout_user(request):
+def logout_user(request):    
     logout(request)
     messages.success(request, "You have been logged out!")
     return redirect('home')
