@@ -4,22 +4,47 @@
 
 {% block content %}
 
-{% if form.errors %}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        There was an error with the form!
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+    {% if form.errors %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            There was an error with the form!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
 
 
-{% endif %}
+    {% endif %}
     <h1 class="display-4 text-center">Register</h1>
 
-    <form  method="POST" action="{% url 'register' %}" class="login-form">
+    {% if user.groups.all.0.name == 'admin'%}
+        
+        <form  method="POST" action="{% url 'register-backoffice-user' %}" class="login-form">
+            {% csrf_token %}
+
+            {{ form.as_p}}
+            
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+
+    {% elif user.groups.all.0.name == 'cinema manager' %}
+
+        <form  method="POST" action="{% url 'register-club-user' %}" class="login-form">
+            {% csrf_token %}
+
+            {{ form.as_p}}
+            
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+
+    {% else %}
+        
+     <form  method="POST" action="{% url 'register-student' %}" class="login-form">
         {% csrf_token %}
 
         {{ form.as_p}}
         
         <input type="submit" value="Submit" class="btn btn-primary">
     </form>
+
+
+    {% endif %}
     
 {% endblock content %}
