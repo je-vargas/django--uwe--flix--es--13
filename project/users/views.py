@@ -48,7 +48,7 @@ def register_user(request):
             return redirect('home')
     else: 
         form = RegisterUserForm()
-    return render(request, "registration/signup.html", {
+    return render(request, "registration/register.html", {
         'form':form,
     })
 
@@ -72,7 +72,7 @@ def register_clubrep_user(request):
             return redirect('home')
     else: 
         form = RegisterUserForm()
-    return render(request, "registration/signup.html", {
+    return render(request, "registration/register.html", {
         'form':form,
     })
 

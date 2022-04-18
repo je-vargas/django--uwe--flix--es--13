@@ -13,37 +13,119 @@
 
     <h1 class="display-4 text-center">Register</h1>
 
-    <form  method="POST" action="{% url 'register' %}" class="login-form">
-        {% csrf_token %}
-        <p>
-            {{ form.username.label }}
-            {{ form.username }}
-        </p>
-        <p>
-            {{ form.email.label }}
-            {{ form.email }}
-        </p>
-        <p>
-            {{ form.first_name.label }}
-            {{ form.first_name }}
-        </p>
-        <p>
-            {{ form.last_name.label }}
-            {{ form.last_name }}
-        </p>
-        <p>
-            {{ form.password1.label }}
-            {{ form.password1 }}
-        </p>
-        <p>
-            {{ form.password2.label }}
-            {{ form.password2 }}
-        </p>
-        
-        <input type="submit" value="Submit" class="btn btn-primary">
-    </form>
+    {% if user.groups.all.0.name == 'admin'%}
 
-    <br>
-    <p class="">Already have an account? <a href="{% url 'login-user' %}">Login</a></p>
+        <form  method="POST" action="{% url 'register-backoffice-user' %}" class="login-form">
+            {% csrf_token %}
+            <p>
+                {{ form.username.label }}
+                {{ form.username }}
+            </p>
+            <p>
+                {{ form.email.label }}
+                {{ form.email }}
+            </p>
+            <p>
+                {{ form.first_name.label }}
+                {{ form.first_name }}
+            </p>
+            <p>
+                {{ form.last_name.label }}
+                {{ form.last_name }}
+            </p>
+            <p>
+                {{ form.role.label }}
+                {{ form.role }}
+            </p>
+            <p>
+                {{ form.password1.label }}
+                {{ form.password1 }}
+            </p>
+            <p>
+                {{ form.password2.label }}
+                {{ form.password2 }}
+            </p>
+            
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+
+        <br>
+        <p >Already have an account? <a href="{% url 'login-user' %}">Login</a></p>
+        <br>
+        <p>Forgotten password? Reset it<a href="{% url 'password_reset' %}">here</a></p>
+    
+    {% elif user.groups.all.0.name == 'cinema manager' %} 
+        <form  method="POST" action="{% url 'register-club-user' %}" class="login-form">
+            {% csrf_token %}
+            <p>
+                {{ form.username.label }}
+                {{ form.username }}
+            </p>
+            <p>
+                {{ form.email.label }}
+                {{ form.email }}
+            </p>
+            <p>
+                {{ form.first_name.label }}
+                {{ form.first_name }}
+            </p>
+            <p>
+                {{ form.last_name.label }}
+                {{ form.last_name }}
+            </p>
+            <p>
+                {{ form.password1.label }}
+                {{ form.password1 }}
+            </p>
+            <p>
+                {{ form.password2.label }}
+                {{ form.password2 }}
+            </p>
+            
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+
+        <br>
+        <p >Already have an account? <a href="{% url 'login-user' %}">Login</a></p>
+        <br>
+        <p>Forgotten password? Reset it<a href="{% url 'password_reset' %}">here</a></p>
+        
+    {% else %}
+         <form  method="POST" action="{% url 'register-student' %}" class="login-form">
+            {% csrf_token %}
+            <p>
+                {{ form.username.label }}
+                {{ form.username }}
+            </p>
+            <p>
+                {{ form.email.label }}
+                {{ form.email }}
+            </p>
+            <p>
+                {{ form.first_name.label }}
+                {{ form.first_name }}
+            </p>
+            <p>
+                {{ form.last_name.label }}
+                {{ form.last_name }}
+            </p>
+            <p>
+                {{ form.password1.label }}
+                {{ form.password1 }}
+            </p>
+            <p>
+                {{ form.password2.label }}
+                {{ form.password2 }}
+            </p>
+            
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+
+        <br>
+        <p >Already have an account? <a href="{% url 'login-user' %}">Login</a></p>
+        <br>
+        <p>Forgotten password? Reset it<a href="{% url 'password_reset' %}">here</a></p>
+        
+
     
 {% endblock content %}
