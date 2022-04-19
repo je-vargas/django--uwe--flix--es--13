@@ -5,7 +5,7 @@
 {% block content %}
 
     <style>
-        p{
+        .loginHelp{
             font-size: 0.8rem;
         }
     </style>
@@ -25,9 +25,7 @@
         <input type="submit" value="Submit" class="btn btn-primary">
     </form>
     <br>
-    <p >Forgot your password? try resetting it <a href="{% url 'password_reset' %}">here</a></p>
-
-    <br>
-    <p class="">Don't have an account <a href="{% url 'register' %}">Register</a></p>
+    <p class="loginHelp">Forgot your password? try resetting it <a href="{% url 'password_reset' %}">here</a></p>
+    <p class="loginHelp">Don't have an account <a href="{% url 'register-student' %}">Register</a></p>
     
 {% endblock content %}

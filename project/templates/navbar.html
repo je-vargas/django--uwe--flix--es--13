@@ -1,3 +1,5 @@
+{% load navbar_tag %}
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="{% url 'home' %}">UWEFlix</a>
@@ -11,79 +13,83 @@
           <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
         </li>
 
-        {% if user.groups.all.0.name == 'cinema manager' or user.groups.all.0.name == 'staff'%}
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Films
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="{% url 'home' %}">All Films</a></li>
-              <li><a class="dropdown-item" href="{% url 'film-new' %}">Add Film</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Showings
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="{% url 'showing-all' %}">All Showings</a></li>
-              <li><a class="dropdown-item" href="{% url 'showing-new' %}">Add Showing</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Screens
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="{% url 'screen-all' %}">All Screens</a></li>
-              <li><a class="dropdown-item" href="{% url 'screen-showing-new' %}">Add Screen Showing</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Clubs
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="{% url 'register-club-user' %}">New Representaive</a></li>
-            </ul>
-          </li>
-
-        {% endif %}
-        
-        {% if user.groups.all.0.name == 'accounts manager'%}
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Account Reports
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="{% url 'home' %}">All Films</a></li>
-              <li><a class="dropdown-item" href="{% url 'film-new' %}">Add Film</a></li>
-            </ul>
-          </li>
-
-        {% endif %}
-
-        {% if user.groups.all.0.name == 'club rep'%}
-
-          <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Purchase Tickets</a>
-          </li>
-
-          <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Booked Tickets</a>
-          </li>
-
-        {% endif %}
-
         {% if user.is_authenticated %}
+
+          {% if user|has_group:'admin'%}
+
             <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'logout-user' %}">Logout</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'register-backoffice-user' %}">New Backoffice User</a>
             </li>
+
+          {% elif user|has_group:'cinema manager' or user|has_group:'staff'%}
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Films
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'home' %}">All Films</a></li>
+                <li><a class="dropdown-item" href="{% url 'film-new' %}">Add Film</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Showings
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'showing-all' %}">All Showings</a></li>
+                <li><a class="dropdown-item" href="{% url 'showing-new' %}">Add Showing</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Screens
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'screen-all' %}">All Screens</a></li>
+                <li><a class="dropdown-item" href="{% url 'screen-showing-new' %}">Add Screen Showing</a></li>
+              </ul>
+            </li>
+            {% if user|has_group:'cinema manager' %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Clubs
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="{% url 'register-club-user' %}">New Representaive</a></li>
+                </ul>
+              </li>
+            {% endif %}
+          
+          {% elif user|has_group:'accounts manager'%}
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Account Reports
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'home' %}">All Films</a></li>
+                <li><a class="dropdown-item" href="{% url 'film-new' %}">Add Film</a></li>
+              </ul>
+            </li>
+
+          {% elif user|has_group:'club rep' or user|has_group:'student'%}
+
+            <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Purchase Tickets</a>
+            </li>
+
+            <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Booked Tickets</a>
+            </li>
+          {% endif %}
+
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'logout-user' %}">Logout</a>
+          </li>
+
         {% else %} 
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'login-user' %}">Login</a>
@@ -93,15 +99,41 @@
             </li>
         {% endif %}
         
+
+        
       </ul>
       {% comment %} maybe use this to search films by date {% endcomment %}
       {% comment %} <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form> {% endcomment %}
-      <a class="navbar-brand" href="">
-        {{user.groups.all.0.name}}
-      </a>
+
+      {% if user.is_authenticated %}
+        {% if user|has_group:'admin' %}
+          <a class="navbar-brand" href="">
+            Administrator
+          </a>
+        {% elif user|has_group:'cinema manager'%}
+          <a class="navbar-brand" href="">
+            Cinema Manager
+          </a>
+        {% elif user|has_group:'accounts manager'%}
+          <a class="navbar-brand" href="">
+            Accounts Manager
+          </a>
+        {% elif user|has_group:'club rep'%}
+          <a class="navbar-brand" href="">
+            Club Rep
+          </a>
+        {% else %}
+          <a class="navbar-brand" href="">
+            Student
+          </a>
+        {% endif %}
+
+      {% endif %}
+      
+      
     </div>
   </div>
 </nav>

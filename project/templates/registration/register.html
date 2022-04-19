@@ -4,16 +4,21 @@
 
 {% block content %}
 
+    <style>
+        .loginHelp{
+            font-size: 0.8rem;
+        }
+    </style>
+
 {% if form.errors %}
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
         There was an error with the form!
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 {% endif %}
+    {% if 'admin' in user_groups %}
 
-    <h1 class="display-4 text-center">Register</h1>
-
-    {% if user.groups.all.0.name == 'admin'%}
+        <h1 class="display-4 text-center">Back Office User Registration</h1>
 
         <form  method="POST" action="{% url 'register-backoffice-user' %}" class="login-form">
             {% csrf_token %}
@@ -39,7 +44,7 @@
             </p>
             <p>
                 {{ form.password1.label }}
-                {{ form.password1 }}
+                 {{ form.password1 }}
             </p>
             <p>
                 {{ form.password2.label }}
@@ -50,11 +55,11 @@
         </form>
 
         <br>
-        <p >Already have an account? <a href="{% url 'login-user' %}">Login</a></p>
-        <br>
-        <p>Forgotten password? Reset it<a href="{% url 'password_reset' %}">here</a></p>
-    
-    {% elif user.groups.all.0.name == 'cinema manager' %} 
+
+    {% elif 'cinema manager' in user_groups %} 
+
+        <h1 class="display-4 text-center">Club Rep Registration</h1>
+
         <form  method="POST" action="{% url 'register-club-user' %}" class="login-form">
             {% csrf_token %}
             <p>
@@ -86,12 +91,11 @@
         </form>
 
         <br>
-        <p >Already have an account? <a href="{% url 'login-user' %}">Login</a></p>
-        <br>
-        <p>Forgotten password? Reset it<a href="{% url 'password_reset' %}">here</a></p>
-        
     {% else %}
-         <form  method="POST" action="{% url 'register-student' %}" class="login-form">
+        
+        <h1 class="display-4 text-center">Student Registration</h1>
+
+        <form  method="POST" action="{% url 'register-student' %}" class="login-form">
             {% csrf_token %}
             <p>
                 {{ form.username.label }}
@@ -122,9 +126,9 @@
         </form>
 
         <br>
-        <p >Already have an account? <a href="{% url 'login-user' %}">Login</a></p>
-        <br>
-        <p>Forgotten password? Reset it<a href="{% url 'password_reset' %}">here</a></p>
+        <p class='loginHelp'>Already have an account? <a href="{% url 'login-user' %}">Login</a></p>
+        <p class='loginHelp'>Forgotten password? Reset it <a href="{% url 'password_reset' %}">here</a></p>
+    {% endif %}
         
 
     
