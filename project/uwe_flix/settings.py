@@ -65,6 +65,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries':{
+                'navbar_tag': 'uwe_flix.templatetags.navbar_tag',
+            }
         },
     },
 ]

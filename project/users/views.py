@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
 
 from decorators import unauthenticated_user, allowed_users
-from .forms import RegisterUserForm, RegisterBackOfficeUserForm
+from access import * 
+from .forms import RegisterUserForm
 from .models import *
 
 @unauthenticated_user 
@@ -31,6 +32,7 @@ def logout_user(request):
     return redirect('home')
 
 def register_user(request):
+    user_groups = None
     if request.method == "POST":
         form = RegisterUserForm(request.POST)
 
@@ -46,12 +48,15 @@ def register_user(request):
             login(request, user)
             messages.success(request, ("Registration Sucessfull!"))
             return redirect('home')
+
     else: 
         form = RegisterUserForm()
+        user_groups = get_user_groups(request)
+
     return render(request, "registration/register.html", {
         'form':form,
+        'user_groups': user_groups
     })
-
 
 @allowed_users(['cinema manager'])
 def register_clubrep_user(request):
@@ -72,14 +77,16 @@ def register_clubrep_user(request):
             return redirect('home')
     else: 
         form = RegisterUserForm()
-    return render(request, "registration/register.html", {
-        'form':form,
-    })
+        user_groups = get_user_groups(request)
+        return render(request, "registration/register.html", {
+            'form':form,
+            'user_groups': user_groups
+        })
 
 @allowed_users(['admin'])
 def register_backoffice_user(request):
     if request.method == "POST":
-        form = RegisterBackOfficeUserForm(request.POST)
+        form = RegisterUserForm(request.POST)
 
         if form.is_valid():
             user_form = form.save()
@@ -98,9 +105,11 @@ def register_backoffice_user(request):
             return redirect('home')
     else: 
         form = RegisterUserForm()
-    return render(request, "registration/register.html", {
-        'form':form,
-    })
+        user_groups = get_user_groups(request)
+        return render(request, "registration/register.html", {
+            'form':form,
+            'user_groups': user_groups
+        })
 
 
 
