@@ -3,7 +3,11 @@ from django.core.exceptions import PermissionDenied
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import Group, User
+from django.utils.decorators import method_decorator
+from django.forms.models import model_to_dict
+
 from .models import Film, Showing, Screen
 from . import forms
 from decorators import allowed_users
@@ -15,12 +19,14 @@ class HomePageView(ListView):
     context_object_name = "all_films"
 
 class FilmsDetailView(DetailView):
-    model = Film
+    model = Film, User
     template_name = 'films/film_detail.html'
 
-    @allowed_users(['cinema manager, staff'])
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    @method_decorator(allowed_users(['cinema manager', 'staff']))
+    def get(self, *args, **kwargs):
+        film_id = self.request.resolver_match.kwargs.get('pk')
+        film = Film.objects.get(id=film_id)
+        return render(self.request, 'films/film_detail.html', {'film':film})
 
 class FilmsNewView(LoginRequiredMixin, CreateView):
     model = Film
@@ -28,9 +34,10 @@ class FilmsNewView(LoginRequiredMixin, CreateView):
     login_url = 'login-user'
     form_class = forms.NewFilmsForm
 
-    @allowed_users(['cinema manager, staff'])
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    @method_decorator(allowed_users(['cinema manager', 'staff']))
+    def get(self, *args, **kwargs):
+        new_film = forms.NewFilmsForm()
+        return render(self.request, 'films/film_new.html', {'form': new_film})
 
 class FilmsUpdateView(LoginRequiredMixin, UpdateView):
     model = Film
@@ -38,9 +45,20 @@ class FilmsUpdateView(LoginRequiredMixin, UpdateView):
     login_url = 'login-user'
     form_class = forms.UpdateFilmForm
 
-    @allowed_users(['cinema manager, staff'])
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    @method_decorator(allowed_users(['cinema manager', 'staff']))
+    def patch(self, *args, **kwargs):
+        film_object = get_object_or_404(Film, pk=self.kwargs.get('pk'))
+        film = model_to_dict(film_object)
+        form = forms.UpdateFilmForm(film)
+
+        if form.is_valid():
+            form.save()
+            return redirect('film-details')
+
+        return render(self.request, 'films/film_update.html', {
+            'form': form,
+            'film': film_object
+            })
 
 class FilmsDeleteView(LoginRequiredMixin, DeleteView):
     model = Film
@@ -48,9 +66,15 @@ class FilmsDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('home')
     login_url = 'login-user'
 
-    @allowed_users(['cinema manager, staff'])
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    @method_decorator(allowed_users(['cinema manager', 'staff']))
+    def delete(self, *args, **kwargs):
+        
+        film_object = get_object_or_404(Film, pk=self.kwargs.get('pk'))
+        
+        if self.request.method == "POST":
+            film_object.delete()
+            return redirect('home')
+        return render(self.request, 'films/film_delete.html')
 
 @allowed_users(['cinema manager', 'staff'])
 def showingsNewView(request):

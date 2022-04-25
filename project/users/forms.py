@@ -9,7 +9,7 @@ class RegisterUserForm(UserCreationForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control'}))
     first_name = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
     last_name = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
-    role = forms.ChoiceField(choices=BACKOFFICE_ROLES, required=True, widget=forms.Select(attrs={'class':'form-control'}))
+    role = forms.ChoiceField(choices=BACKOFFICE_ROLES, required=False, widget=forms.Select(attrs={'class':'form-control'}))
 
     class Meta:
         model = User

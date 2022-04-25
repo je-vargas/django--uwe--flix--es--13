@@ -63,6 +63,7 @@ def register_clubrep_user(request):
     if request.method == "POST":
         form = RegisterUserForm(request.POST)
 
+
         if form.is_valid():
             user_form = form.save()
             username = form.cleaned_data['username']
@@ -75,13 +76,13 @@ def register_clubrep_user(request):
             login(request, user)
             messages.success(request, ("Registration Sucessfull!"))
             return redirect('home')
-    else: 
-        form = RegisterUserForm()
-        user_groups = get_user_groups(request)
-        return render(request, "registration/register.html", {
-            'form':form,
-            'user_groups': user_groups
-        })
+    
+    form = RegisterUserForm()
+    user_groups = get_user_groups(request)
+    return render(request, "registration/register.html", {
+        'form':form,
+        'user_groups': user_groups
+    })
 
 @allowed_users(['admin'])
 def register_backoffice_user(request):
