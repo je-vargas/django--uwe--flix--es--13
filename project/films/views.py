@@ -24,8 +24,7 @@ class FilmsDetailView(DetailView):
 
     @method_decorator(allowed_users(['cinema manager', 'staff']))
     def get(self, *args, **kwargs):
-        film_id = self.request.resolver_match.kwargs.get('pk')
-        film = Film.objects.get(id=film_id)
+        film = get_object_or_404(Film, pk=self.kwargs.get('pk'))
         return render(self.request, 'films/film_detail.html', {'film':film})
 
 class FilmsNewView(LoginRequiredMixin, CreateView):
@@ -33,9 +32,28 @@ class FilmsNewView(LoginRequiredMixin, CreateView):
     template_name = 'films/film_new.html'
     login_url = 'login-user'
     form_class = forms.NewFilmsForm
+    success_url = 'home'
 
     @method_decorator(allowed_users(['cinema manager', 'staff']))
-    def get(self, *args, **kwargs):
+    def post(self, *args, **kwargs):
+        request = self.request
+
+        form = forms.NewFilmsForm(request.POST or None)
+        if request.method == 'POST':   
+
+            if form.is_valid():
+                form.save()
+                return redirect('home')
+            else: 
+                return render(request, 'films/film_new.html', {
+                    'form':form,
+                    'title':request.POST.get('title'), 
+                    'age_rating':request.POST.get('age_rating'),
+                    'duration':request.POST.get('duration'),
+                    'film_description':request.POST.get('film_description'),
+                    'release_date':request.POST.get('release_date')
+                })
+        
         new_film = forms.NewFilmsForm()
         return render(self.request, 'films/film_new.html', {'form': new_film})
 
@@ -74,7 +92,7 @@ class FilmsDeleteView(LoginRequiredMixin, DeleteView):
         if self.request.method == "POST":
             film_object.delete()
             return redirect('home')
-        return render(self.request, 'films/film_delete.html')
+        return render(self.request, 'showings/film_delete.html')
 
 @allowed_users(['cinema manager', 'staff'])
 def showingsNewView(request):
@@ -90,14 +108,11 @@ def showingsNewView(request):
 
             print(f"time: {time}\ndate: {date}\nfilm: {film_id}")
 
-            showing = form.save(commit=False)
-            
-            print(f"obj: {showing}")
-            showing.save()
+            showing = form.save()
 
-            return redirect('showings-all')
+            return redirect('showing-all')
         else:
-            return render(request, 'screens/_new.html', {
+            return render(request, 'showings/showing_new.html', {
                 "form":form,
                 "film_id":request.POST.get('form-0-film-id'),
                 "time":request.POST.get('form-1-time'),
@@ -113,38 +128,59 @@ class ShowingsAllView(ListView):
     template_name = 'showings/showing_all.html'
     context_object_name = "all_showings"
 
-    @allowed_users(['cinema manager, staff'])
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    @method_decorator(allowed_users(['cinema manager', 'staff']))
+    def get(self, *args, **kwargs):
+        showings = Showing.objects.all()
+        return render(self.request, 'showings/showing_all.html', {
+            'all_showings':showings
+        })
 
 class ShowingDetailView(LoginRequiredMixin, DetailView):
     model = Showing
     template_name = 'showings/showing_detail.html'
 
-    @allowed_users(['cinema manager, staff'])
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    @method_decorator(allowed_users(['cinema manager', 'staff']))
+    def get(self, *args, **kwargs):
+        showing = get_object_or_404(Showing, pk=self.kwargs.get('pk'))
+        return render(self.request, 'showings/showing_detail.html', {'showing':showing})
 
 class ShowingUpdateView(LoginRequiredMixin, UpdateView):
     model = Showing
-    template_name = 'showings/showing_detail_update.html'
+    template_name = 'showings/showing_update.html'
     success_url = reverse_lazy('screen-all')
     login_url = 'login-user'
     form_class=forms.UpdateShowingForm
 
-    @allowed_users(['cinema manager, staff'])
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    @method_decorator(allowed_users(['cinema manager', 'staff']))
+    def patch(self, *args, **kwargs):
+        showing_object = get_object_or_404(Showing, pk=self.kwargs.get('pk'))
+        showing = model_to_dict(showing_object)
+        form = forms.UpdateFilmForm(showing)
+
+        if form.is_valid():
+            form.save()
+            return redirect('showing-details')
+
+        return render(self.request, 'showings/showing_update.html', {
+            'form': form,
+            'showing':showing_object
+            })
 
 class ShowingDeleteView(LoginRequiredMixin, DeleteView):
     model = Showing
-    template_name = template_name = 'showings/showing_detail_delete.html'
-    success_url = reverse_lazy('screen-all')
+    template_name = 'showings/showing_delete.html'
+    success_url = reverse_lazy('showing-all')
     login_url = 'login-user'
 
-    @allowed_users(['cinema manager, staff'])
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    @method_decorator(allowed_users(['cinema manager', 'staff']))
+    def delete(self, *args, **kwargs):
+
+        showing_object = get_object_or_404(Showing, pk=self.kwargs.get('pk'))
+        
+        if self.request.method == "POST":
+            showing_object.delete()
+            return redirect('home')
+        return render(self.request, 'showings/showing_delete.html')
 
 class ScreenAllView(ListView):
     model = Screen
@@ -152,19 +188,22 @@ class ScreenAllView(ListView):
     context_object_name = "all_screens"
     success_url = reverse_lazy('screen-all')
 
-    @allowed_users(['cinema manager, staff'])
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    @method_decorator(allowed_users(['cinema manager', 'staff']))
+    def get(self, *args, **kwargs):
+        screens = Screen.objects.all()
+        return render(self.request, 'screens/screen_all.html', {
+            'all_screens' : screens
+        })
 
 class ScreenDetailView(LoginRequiredMixin, DetailView):
     model = Screen
     template_name = 'screens/screen_detail.html'
 
-    @allowed_users(['cinema manager, staff'])
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-    
-
+    @method_decorator(allowed_users(['cinema manager', 'staff']))
+    def get(self, *args, **kwargs):
+        screen = get_object_or_404(Screen, pk=self.kwargs.get('pk'))
+        return render(self.request, 'screens/screen_detail.html', {'screen':screen})
+        
 class ScreenUpdateView(LoginRequiredMixin, UpdateView):
     model = Screen
     template_name = 'screens/screen_update.html'
@@ -172,9 +211,20 @@ class ScreenUpdateView(LoginRequiredMixin, UpdateView):
     form_class = forms.UpdateScreenForm
     success_url = reverse_lazy('screen-all')
 
-    @allowed_users(['cinema manager, staff'])
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    @method_decorator(allowed_users(['cinema manager', 'staff']))
+    def patch(self, *args, **kwargs):
+        screen_object = get_object_or_404(Screen, pk=self.kwargs.get('pk'))
+        screen = model_to_dict(screen_object)
+        form = forms.UpdateFilmForm(screen)
+
+        if form.is_valid():
+            form.save()
+            return redirect('screen-details')
+
+        return render(self.request, 'screens/screen_update.html', {
+            'form': form,
+            'screen':screen_object
+            })
 
 class ScreenDeleteView(LoginRequiredMixin, DeleteView):
     model = Screen
@@ -182,9 +232,15 @@ class ScreenDeleteView(LoginRequiredMixin, DeleteView):
     login_url = 'login-user'
     success_url = reverse_lazy('screen-all')
 
-    @allowed_users(['cinema manager, staff'])
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    @method_decorator(allowed_users(['cinema manager', 'staff']))
+    def delete(self, *args, **kwargs):
+
+        screen_object = get_object_or_404(Screen, pk=self.kwargs.get('pk'))
+        
+        if self.request.method == "POST":
+            screen_object.delete()
+            return redirect('home')
+        return render(self.request, 'screens/screen_delete.html')
 
 class ScreenNewView(LoginRequiredMixin, CreateView):
     model = Screen
@@ -193,9 +249,26 @@ class ScreenNewView(LoginRequiredMixin, CreateView):
     form_class = forms.NewScreenForm
     success_url = reverse_lazy('screen-all')
 
-    @allowed_users(['cinema manager, staff'])
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    @method_decorator(allowed_users(['cinema manager', 'staff']))
+    def post(self, *args, **kwargs):
+        request = self.request
+
+        if request.method == 'POST':   
+            form = forms.NewScreenForm(request.POST or None)
+
+            if form.is_valid():
+                form.save()
+                return redirect('screen-all')
+            else: 
+                return render(request, 'screens/screen_new.html', {
+                    'form':form,
+                    'screen_number':request.POST.get('screen_number'), 
+                    'screen_sscreen_seats_number':request.POST.get('screen_sscreen_seats_number'),
+                    'showings_id':request.POST.get('showings_id'),
+                })
+        
+        new_screen = forms.NewScreenForm()
+        return render(self.request, 'screens/screen_new.html', {'form': new_screen})
 
 class AboutPageView(TemplateView):
     template_name = 'about.html'
