@@ -2,6 +2,8 @@ from django import forms
 from django.core.validators import RegexValidator
 from .models import *
 
+TIME_REGEX = RegexValidator('^([0-1][0-9]|[2][0-3]):([0-5][0-9])$', message='Enter time as HH:MM, e.g. 13:20')
+
 class DateCustomWidget(forms.DateInput):
     input_type = 'date'
 
@@ -9,10 +11,12 @@ class TimeCustomWidget(forms.TimeInput):
     input_type = 'time'
 
 class NewFilmsForm(forms.ModelForm):
+    FILM_AGE = (('U','U'), ('PG', 'PG'), ('12A', '12A'), ('12', '12'), ('15', '15'), ('18', '18'), ('R18', 'R18'))
+    
     title = forms.CharField(max_length=300, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
-    age_rating = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
+    age_rating = forms.ChoiceField(choices=FILM_AGE, required=True, widget=forms.Select(attrs={'class':'form-control'}))
     film_description = forms.CharField(max_length=500, required=True, widget=forms.Textarea(attrs={'class':'form-control'}))
-    duration = forms.TimeField(required=True, widget=TimeCustomWidget(format='%H:%M', attrs={'class':'form-control'}))
+    duration = forms.CharField(max_length=6, required=True, validators=[TIME_REGEX] ,widget=forms.TextInput(attrs={'class':'form-control'}))
     release_date = forms.DateField(required=True, widget=DateCustomWidget(attrs={'class':'form-control'}))
 
     class Meta:
@@ -31,9 +35,8 @@ class NewFilmsForm(forms.ModelForm):
 class UpdateFilmForm(NewFilmsForm): pass
 
 class NewShowingsForm(forms.ModelForm):
-    time_regex = RegexValidator('^([0-1][0-9]|[2][0-3]):([0-5][0-9])$', message='Enter time as HH:MM, e.g. 13:20')
-
-    time = forms.CharField(max_length=50, required=False, validators=[time_regex] ,widget=forms.TextInput(attrs={'class':'form-control'}))
+    
+    time = forms.CharField(max_length=50, required=False, validators=[TIME_REGEX] ,widget=forms.TextInput(attrs={'class':'form-control'}))
     date = forms.DateField(required=False, widget=DateCustomWidget(attrs={'class':'form-control'}))
     
     class Meta:
