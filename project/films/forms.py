@@ -1,5 +1,7 @@
 from django import forms 
 from django.core.validators import RegexValidator
+from django.core.exceptions import ValidationError
+
 from .models import *
 
 TIME_REGEX = RegexValidator('^([0-1][0-9]|[2][0-3]):([0-5][0-9])$', message='Enter time as HH:MM, e.g. 13:20')
@@ -66,11 +68,14 @@ class NewScreenForm(forms.ModelForm):
         self.fields['screen_seats_number'].widget.attrs['class'] = 'form-control'
         self.fields['showings_id'].widget.attrs['class'] = 'form-control'
 
-    def clean_screen_number(self):
+    def clean(self):
         screen_number = self.cleaned_data['screen_number']
-        if Screen.objects.filter(screen_number=screen_number).exists():
-            raise ValidationError("Screen already exists")
+
+        if Screen.objects.filter(screen_number=screen_number).exists(): 
+            raise ValidationError(('Screen already exists'), code='invalid')
         return screen_number
+
+    
 
 
 class UpdateScreenForm(NewScreenForm): pass
