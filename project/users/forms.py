@@ -3,10 +3,13 @@ from django.contrib.auth.models import User
 from django import forms
 
 class RegisterUserForm(UserCreationForm):
+
+    BACKOFFICE_ROLES = (('cinema manager','Cinema Manager'), ('accounts manager', 'Accounts Manager'))
+
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control'}))
     first_name = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
     last_name = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
-    role = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
+    role = forms.ChoiceField(choices=BACKOFFICE_ROLES, required=False, widget=forms.Select(attrs={'class':'form-control'}))
 
     class Meta:
         model = User
@@ -17,6 +20,6 @@ class RegisterUserForm(UserCreationForm):
         self.fields['username'].widget.attrs['class'] = 'form-control'
         self.fields['password1'].widget.attrs['class'] = 'form-control'
         self.fields['password2'].widget.attrs['class'] = 'form-control'
-
+        self.fields['role'].widget.attrs['class'] = 'form-control'
 
     

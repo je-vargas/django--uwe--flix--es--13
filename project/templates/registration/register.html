@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock title %}
+
+{% block content %}
+
+    <style>
+        .loginHelp{
+            font-size: 0.8rem;
+        }
+    </style>
+
+{% if form.errors %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {% for error in form_errors %}
+        {{error}}
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+    {% if 'admin' in user_groups %}
+
+        <h1 class="display-4 text-center">Back Office User Registration</h1>
+
+        <form  method="POST" action="{% url 'register-backoffice-user' %}" class="login-form">
+            {% csrf_token %}
+            <p>
+                {{ form.username.label }}
+                {{ form.username }}
+            </p>
+            <p>
+                {{ form.email.label }}
+                {{ form.email }}
+            </p>
+            <p>
+                {{ form.first_name.label }}
+                {{ form.first_name }}
+            </p>
+            <p>
+                {{ form.last_name.label }}
+                {{ form.last_name }}
+            </p>
+            <p>
+                {{ form.role.label }}
+                {{ form.role }}
+            </p>
+            <p>
+                {{ form.password1.label }}
+                 {{ form.password1 }}
+            </p>
+            <p>
+                {{ form.password2.label }}
+                {{ form.password2 }}
+            </p>
+            
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+
+        <br>
+
+    {% elif 'cinema manager' in user_groups %} 
+
+        <h1 class="display-4 text-center">Club Rep Registration</h1>
+
+        <form  method="POST" action="{% url 'register-club-user' %}" class="login-form">
+            {% csrf_token %}
+            <p>
+                {{ form.username.label }}
+                {{ form.username }}
+            </p>
+            <p>
+                {{ form.email.label }}
+                {{ form.email }}
+            </p>
+            <p>
+                {{ form.first_name.label }}
+                {{ form.first_name }}
+            </p>
+            <p>
+                {{ form.last_name.label }}
+                {{ form.last_name }}
+            </p>
+            <p>
+                {{ form.password1.label }}
+                {{ form.password1 }}
+            </p>
+            <p>
+                {{ form.password2.label }}
+                {{ form.password2 }}
+            </p>
+            
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+
+        <br>
+    {% else %}
+        
+        <h1 class="display-4 text-center">Student Registration</h1>
+
+        <form  method="POST" action="{% url 'register-student' %}" class="login-form">
+            {% csrf_token %}
+            <p>
+                {{ form.username.label }}
+                {{ form.username }}
+            </p>
+            <p>
+                {{ form.email.label }}
+                {{ form.email }}
+            </p>
+            <p>
+                {{ form.first_name.label }}
+                {{ form.first_name }}
+            </p>
+            <p>
+                {{ form.last_name.label }}
+                {{ form.last_name }}
+            </p>
+            <p>
+                {{ form.password1.label }}
+                {{ form.password1 }}
+            </p>
+            <p>
+                {{ form.password2.label }}
+                {{ form.password2 }}
+            </p>
+            
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+
+        <br>
+        <p class='loginHelp'>Already have an account? <a href="{% url 'login-user' %}">Login</a></p>
+        <p class='loginHelp'>Forgotten password? Reset it <a href="{% url 'password_reset' %}">here</a></p>
+    {% endif %}
+        
+
+    
+{% endblock content %}

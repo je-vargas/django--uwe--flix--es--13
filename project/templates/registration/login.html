@@ -4,11 +4,17 @@
 
 {% block content %}
 
+    <style>
+        .loginHelp{
+            font-size: 0.8rem;
+        }
+    </style>
+
     <h1 class="display-4 text-center">Login</h1>
 
     <form  method="post" class="login-form">{% csrf_token %}
         <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
+            <label for="exampleInputEmail1" class="form-label">Username</label>
             <input type="text" class="form-control" name="username" aria-describedby="emailHelp">
             <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
         </div>
@@ -18,5 +24,8 @@
         </div>
         <input type="submit" value="Submit" class="btn btn-primary">
     </form>
+    <br>
+    <p class="loginHelp">Forgot your password? try resetting it <a href="{% url 'password_reset' %}">here</a></p>
+    <p class="loginHelp">Don't have an account <a href="{% url 'register-student' %}">Register</a></p>
     
 {% endblock content %}
