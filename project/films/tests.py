@@ -67,7 +67,7 @@ class FilmTest(TestCase):
         film_desc = "one of the best"
         release_date = datetime.date(2022, 3, 12),
 
-        response = self.client.post(reverse('film_new'),{
+        response = self.client.post(reverse('film-new'),{
             "title": title,
             "age_rating": age_rating,
             "duration": duration,
@@ -86,7 +86,7 @@ class FilmTest(TestCase):
         duration = "1hr 15mins"
         film_desc = "one of the best"
         release_date = datetime.date(2022, 3, 12)
-        response = self.client.post(reverse('film_update', args='1'), {
+        response = self.client.post(reverse('film-update', args='1'), {
             "title": 'updated view',
             "age_rating": "12G",
             "duration": duration,
@@ -97,5 +97,5 @@ class FilmTest(TestCase):
         self.assertEqual(response.status_code, 302)
     
     def test_film_delete_view(self):
-        response = self.client.get(reverse('film_delete', args='1'))
+        response = self.client.get(reverse('film-delete', args='1'))
         self.assertEqual(response.status_code, 200)

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="display-4 text-center">New Showing</h1>
+
+    <form class="showing-form" method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Save" class="btn btn-primary">
+    </form>
+{% endblock content %}
+
