@@ -1,6 +1,6 @@
 from django import forms 
 from django.core.validators import RegexValidator
-from . import models as md
+from .models import *
 
 class DateCustomWidget(forms.DateInput):
     input_type = 'date'
@@ -16,7 +16,7 @@ class NewFilmsForm(forms.ModelForm):
     release_date = forms.DateField(required=True, widget=DateCustomWidget(attrs={'class':'form-control'}))
 
     class Meta:
-        model = md.Film
+        model = Film
         fields = ('title', 'film_description', 'age_rating', 'duration', 'release_date')
 
     def __init__(self, *args, **kwargs):
@@ -37,7 +37,7 @@ class NewShowingsForm(forms.ModelForm):
     date = forms.DateField(required=False, widget=DateCustomWidget(attrs={'class':'form-control'}))
     
     class Meta:
-        model = md.Showing
+        model = Showing
         fields = ('film_id','time', 'date')
 
     def __init__(self, *args, **kwargs):
@@ -54,7 +54,7 @@ class NewScreenForm(forms.ModelForm):
     screen_seats_number = forms.IntegerField( required=True, widget=forms.NumberInput(attrs={'class':'form-control'}))
 
     class Meta:
-        model = md.Screen
+        model = Screen
         fields = ('screen_number', 'screen_seats_number', 'showings_id')
 
     def __init__(self, *args, **kwargs):
@@ -62,6 +62,12 @@ class NewScreenForm(forms.ModelForm):
         self.fields['screen_number'].widget.attrs['class'] = 'form-control'
         self.fields['screen_seats_number'].widget.attrs['class'] = 'form-control'
         self.fields['showings_id'].widget.attrs['class'] = 'form-control'
+
+    def clean_screen_number(self):
+        screen_number = self.cleaned_data['screen_number']
+        if Screen.objects.filter(screen_number=screen_number).exists():
+            raise ValidationError("Screen already exists")
+        return screen_number
 
 
 class UpdateScreenForm(NewScreenForm): pass
