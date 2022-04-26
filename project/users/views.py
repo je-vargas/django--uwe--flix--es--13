@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Group, User
@@ -11,6 +11,7 @@ from access import *
 from .forms import RegisterUserForm
 from .models import *
 
+#* ------------------ AUTHENTICATION ---------------------
 @unauthenticated_user 
 def login_user(request):    
     if request.method == "POST":
@@ -134,5 +135,46 @@ def register_backoffice_user(request):
     })
 
 
+#* ------------------ ACCOUNTS ---------------------
 
-   
+@allowed_users(['cinema manager'])
+def get_clubRep_accounts(request):
+    account = User.objects.filter(groups__name='club rep')
+    
+    return render(request, "users/accounts.html" , {
+        'account': account,
+        'update':'club-update',
+        'delete':'club-delete',
+    })
+
+@allowed_users(['cinema manager'])
+def update_clubRep_accounts(request):
+    account = User.objects.filter(groups__name='club rep')
+    
+    return HttpResponse('implement updating clubRep account')
+
+@allowed_users(['cinema manager'])
+def delete_clubRep_accounts(request):
+    account = User.objects.filter(groups__name='club rep')
+    
+    return HttpResponse('implement deleting clubRep account')
+
+@allowed_users(['cinema manager'])
+def get_student_accounts(request):
+    account = User.objects.filter(groups__name='student')
+    
+    return render(request, "users/accounts.html" , {
+        'account': account,
+        'update':'student-update',
+        'delete':'student-delete',
+    })
+
+def update_student_accounts(request):
+    account = User.objects.filter(groups__name='student')
+    
+    return HttpResponse('implement updating student account')
+
+def delete_student_accounts(request):
+    account = User.objects.filter(groups__name='student')
+    
+    return HttpResponse('implement deleting student account')
