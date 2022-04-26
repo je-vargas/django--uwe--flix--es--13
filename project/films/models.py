@@ -118,7 +118,7 @@ class Showing(models.Model):
         return r_str
 
 class Screen(models.Model):
-    screen_number = models.IntegerField()
+    screen_number = models.IntegerField(unique=True)
     screen_seats_number = models.IntegerField()
     showings_id = models.ManyToManyField(Showing, blank=True)
     
