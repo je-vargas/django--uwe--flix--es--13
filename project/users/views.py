@@ -33,6 +33,8 @@ def logout_user(request):
 
 def register_user(request):
     user_groups = None
+    form_errors = None
+
     if request.method == "POST":
         form = RegisterUserForm(request.POST)
 
@@ -48,21 +50,27 @@ def register_user(request):
             login(request, user)
             messages.success(request, ("Registration Sucessfull!"))
             return redirect('home')
+        else:
+            error = list(form.errors.keys())
+            form_errors = form.errors.get(error[0])
 
     else: 
         form = RegisterUserForm()
         user_groups = get_user_groups(request)
+        
 
     return render(request, "registration/register.html", {
         'form':form,
-        'user_groups': user_groups
+        'user_groups': user_groups,
+        'form_errors' : form_errors
     })
 
 @allowed_users(['cinema manager'])
 def register_clubrep_user(request):
+    form_errors = None
+    user_groups = None
     if request.method == "POST":
         form = RegisterUserForm(request.POST)
-
 
         if form.is_valid():
             user_form = form.save()
@@ -76,16 +84,24 @@ def register_clubrep_user(request):
             login(request, user)
             messages.success(request, ("Registration Sucessfull!"))
             return redirect('home')
-    
-    form = RegisterUserForm()
-    user_groups = get_user_groups(request)
+        else:
+            error = list(form.errors.keys())
+            form_errors = form.errors.get(error[0])
+    else:
+        form = RegisterUserForm()
+        user_groups = get_user_groups(request)
+
     return render(request, "registration/register.html", {
         'form':form,
-        'user_groups': user_groups
+        'user_groups': user_groups,
+        'form_errors': form_errors
     })
 
 @allowed_users(['admin'])
 def register_backoffice_user(request):
+    form_errors = None
+    user_groups = None
+
     if request.method == "POST":
         form = RegisterUserForm(request.POST)
 
@@ -104,13 +120,18 @@ def register_backoffice_user(request):
             login(request, user)
             messages.success(request, ("Registration Sucessfull!"))
             return redirect('home')
+        else:
+            error = list(form.errors.keys())
+            form_errors = form.errors.get(error[0])
     else: 
         form = RegisterUserForm()
         user_groups = get_user_groups(request)
-        return render(request, "registration/register.html", {
-            'form':form,
-            'user_groups': user_groups
-        })
+
+    return render(request, "registration/register.html", {
+        'form':form,
+        'user_groups': user_groups,
+        'form_errors': form_errors
+    })
 
 
 

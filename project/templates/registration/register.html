@@ -12,7 +12,9 @@
 
 {% if form.errors %}
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        There was an error with the form!
+        {% for error in form_errors %}
+        {{error}}
+        {% endfor %}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 {% endif %}
