@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
+from django.forms.models import model_to_dict
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Group, User
@@ -8,7 +9,7 @@ from django.views import generic
 
 from decorators import unauthenticated_user, allowed_users
 from access import * 
-from .forms import RegisterUserForm
+from .forms import *
 from .models import *
 
 #* ------------------ AUTHENTICATION ---------------------
@@ -82,9 +83,8 @@ def register_clubrep_user(request):
             user_form.groups.add(group)
 
             user = authenticate(request, username=username, password=password)
-            login(request, user)
             messages.success(request, ("Registration Sucessfull!"))
-            return redirect('home')
+            return redirect('club-accounts')
         else:
             error = list(form.errors.keys())
             form_errors = form.errors.get(error[0])
@@ -148,16 +148,37 @@ def get_clubRep_accounts(request):
     })
 
 @allowed_users(['cinema manager'])
-def update_clubRep_accounts(request):
-    account = User.objects.filter(groups__name='club rep')
+def update_clubRep_accounts(request, pk):
+
+    account_obj = get_object_or_404(User, pk=pk)
+    if request.method == 'POST':
+        form = AccountUpdateForm(request.POST or None, instance = account_obj)
+
+        if form.is_valid():
+            form.save()
+            return redirect('club-accounts')
     
-    return HttpResponse('implement updating clubRep account')
+    else: form = AccountUpdateForm(instance = account_obj)
+    
+    return render(request, 'users/account_update.html', {
+        "form":form,
+        })
+    
 
 @allowed_users(['cinema manager'])
-def delete_clubRep_accounts(request):
-    account = User.objects.filter(groups__name='club rep')
+def delete_clubRep_accounts(request, pk):
+
+    account_obj = get_object_or_404(User, pk=pk)
+
+    if request.method == 'POST':
+
+        account_obj.delete()
+        messages.success(request, 'Account sucessfully deleted')
+        return redirect('club-accounts')
     
-    return HttpResponse('implement deleting clubRep account')
+    return render(request, 'users/account_delete.html', {
+        "account":account_obj
+    })
 
 @allowed_users(['cinema manager'])
 def get_student_accounts(request):
