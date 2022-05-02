@@ -156,15 +156,15 @@ def update_clubRep_accounts(request, pk):
 
         if form.is_valid():
             form.save()
+            messages.success(request, 'Club Rep account sucessfully updated')
             return redirect('club-accounts')
-    
+
     else: form = AccountUpdateForm(instance = account_obj)
     
     return render(request, 'users/account_update.html', {
         "form":form,
         })
     
-
 @allowed_users(['cinema manager'])
 def delete_clubRep_accounts(request, pk):
 
@@ -190,12 +190,35 @@ def get_student_accounts(request):
         'delete':'student-delete',
     })
 
-def update_student_accounts(request):
-    account = User.objects.filter(groups__name='student')
+@allowed_users(['cinema manager', 'staff'])
+def update_student_accounts(request, pk):
     
-    return HttpResponse('implement updating student account')
+    account_obj = get_object_or_404(User, pk=pk)
+    
+    if request.method == 'POST':
+        form = AccountUpdateForm(request.POST or None, instance = account_obj)
 
-def delete_student_accounts(request):
-    account = User.objects.filter(groups__name='student')
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Student account sucessfully updated')
+            return redirect('student-accounts')
     
-    return HttpResponse('implement deleting student account')
+    else: form = AccountUpdateForm(instance = account_obj)
+    
+    return render(request, 'users/account_update.html', {
+        "form":form,
+        })
+
+@allowed_users(['cinema manager', 'staff'])
+def delete_student_accounts(request, pk):
+    account_obj = get_object_or_404(User, pk=pk)
+
+    if request.method == 'POST':
+
+        account_obj.delete()
+        messages.success(request, 'Account sucessfully deleted')
+        return redirect('student-accounts')
+    
+    return render(request, 'users/account_delete.html', {
+        "account":account_obj
+    })
