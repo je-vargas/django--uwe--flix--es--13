@@ -10,8 +10,8 @@ urlpatterns = [
     
     path('clubs', get_clubRep_accounts , name='club-accounts'),
     path('students', get_student_accounts , name='student-accounts'),
-    path('clubs/update', update_clubRep_accounts , name='club-update'),
-    path('clubs/delete', delete_clubRep_accounts , name='club-delete'),
-    path('students/update', update_student_accounts , name='student-update'),
-    path('students/delete', delete_student_accounts , name='student-delete')
+    path('clubs/<int:pk>/update', update_clubRep_accounts , name='club-update'),
+    path('clubs/<int:pk>/delete', delete_clubRep_accounts , name='club-delete'),
+    path('students/<int:pk>/update', update_student_accounts , name='student-update'),
+    path('students/<int:pk>/delete', delete_student_accounts , name='student-delete')
 ]
