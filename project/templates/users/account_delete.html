@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <p>This will permanently delete account with login: <b>{{account.username}}</b> from the system. Do you want to proceed?</p>
+    
+        <input type="submit" value="Delete" class="btn btn-success"/>
+        <a href="{% url 'club-accounts' %}" class="btn btn-dark">Back</a>
+
+    </form>
+
+
+{% endblock %}

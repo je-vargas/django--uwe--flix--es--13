@@ -11,8 +11,8 @@
         {{user.first_name}}
         {{user.last_name}}
         </p>
-        <a href="{% url update %}">Update Account</a>
-        <a href="{% url delete %}">Delete Account</a>
+        <a href="{% url update user.pk %}">Update Account</a>
+        <a href="{% url delete user.pk %}">Delete Account</a>
     {% endfor %}
 
 {% endblock %}
