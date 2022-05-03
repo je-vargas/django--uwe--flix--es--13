@@ -107,19 +107,18 @@ class AccountRole(models.Model):
     role = models.ForeignKey(Roles, on_delete=models.PROTECT)
 
 class Screen(models.Model):
-    screen_number = models.IntegerField(unique=True)
-    screen_seats_number = models.IntegerField()
+    number = models.IntegerField(unique=True)
+    capacity = models.IntegerField()
     
     def __str__(self):
-        r_str = "{0} {1}".format(self.screen_number)
+        r_str = "{0}".format(self.number)
         return r_str
 
 class Showing(models.Model):
     date = models.DateField(auto_now=False, auto_now_add=False)
     time = models.CharField(max_length=50)
     film = models.ForeignKey(Film, on_delete=models.CASCADE)
-    screen = models.ManyToManyField(Screen)
-
+    screen = models.ForeignKey(Screen, on_delete=models.CASCADE)
 
     def __str__(self):
         r_str = "{0} {1} {2}".format(self.film, self.time, self.date)
