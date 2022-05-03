@@ -10,7 +10,6 @@
                         <h5 class="card-title">Screen {{ screen.screen_number }}</h5>
                         <br>
                         <p class="card-text">Seat Capacity {{ screen.screen_seats_number }}</p>
-                        <p class="card-text">{{ screen.showings_id.time }}</p>
                     </div>
                     <div class="card-footer">
                             <a href="{% url 'screen-details' screen.pk %}" class="btn btn-primary">Update details</a>

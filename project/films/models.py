@@ -11,7 +11,7 @@ class TicketType(models.Model):
 class Film(models.Model):
     title = models.CharField(max_length=50, null=False)
     age_rating = models.CharField(max_length=20)
-    duration = models.CharField(max_length=30)
+    duration = models.IntegerField(null=False)
     film_description = models.CharField(max_length=500, null=False)
     release_date = models.DateField()
     
@@ -21,6 +21,7 @@ class Film(models.Model):
 
     #* get_absolute_url - redirects after submitting a from to film detail
     def get_absolute_url(self):
+        print(self)
         return reverse("film-details", args=[str(self.id)])
 
 class CardDetails(models.Model):
@@ -34,7 +35,7 @@ class CardDetails(models.Model):
 class Account(models.Model):
     account_title = models.CharField(max_length=50, null=False)
     account_discount = models.BigIntegerField(null=True)
-    card_details_id = models.ForeignKey(CardDetails, on_delete=models.PROTECT)
+    card_details = models.ForeignKey(CardDetails, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.account_title + " " + self.account_discount
@@ -46,8 +47,6 @@ class Booking(models.Model):
     def __str__(self):
         r_str = "{0} {1}".format(self.booking_cost, self.number_of_tickets)
         return r_str
-
-
 
 class Address(models.Model):
     house_number: models.IntegerField(null=False)
@@ -76,61 +75,62 @@ class Representative(models.Model):
     dob = models.DateField(auto_now=False, auto_now_add=False)
     unique_number = models.UUIDField(default=uuid.uuid4)
     unique_password = models.CharField(max_length=50)
-    login_account_id = models.ForeignKey(LoginAccount, on_delete=models.CASCADE)
+    login_account = models.ForeignKey(LoginAccount, on_delete=models.CASCADE)
 
 class Club(models.Model):
     club_name = models.CharField(max_length=100, null=False)
     club_guid = models.UUIDField(default=uuid.uuid4)
-    address_id = models.ForeignKey(Address, on_delete=models.CASCADE)
-    contact_details_id = models.ForeignKey(ContactDetails, on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    contact_details = models.ForeignKey(ContactDetails, on_delete=models.CASCADE)
     club_rep = models.ForeignKey(Representative, blank=True, on_delete=models.CASCADE)
 
 class LoginTransaction(models.Model):
     date_of_payment = models.DateTimeField(null=False)
-    booking_id = models.ForeignKey(Booking, on_delete=models.PROTECT)
-    account_id = models.ForeignKey(Account, on_delete=models.PROTECT)
-    club_id = models.ForeignKey(Club, on_delete=models.PROTECT)
+    booking = models.ForeignKey(Booking, on_delete=models.PROTECT)
+    account = models.ForeignKey(Account, on_delete=models.PROTECT)
+    club = models.ForeignKey(Club, on_delete=models.PROTECT)
     
 class GuessTransaction(models.Model):
     date_of_payment = models.DateTimeField(null=False)
-    booking_id = models.ForeignKey(Booking, on_delete=models.PROTECT)
-    card_details_id = models.ForeignKey(CardDetails, blank=True, on_delete=models.PROTECT)
+    booking = models.ForeignKey(Booking, on_delete=models.PROTECT)
+    card_details = models.ForeignKey(CardDetails, blank=True, on_delete=models.PROTECT)
 
     def __str__(self):
-        r_str = "{0} {1} {2}".format(self.booking_id, self.card_details_id, self.date_of_payment)
+        r_str = "{0} {1} {2}".format(self.booking, self.card_details, self.date_of_payment)
         return r_str
 
 class Roles(models.Model):
     roles = models.CharField(max_length=50)
 
 class AccountRole(models.Model):
-    login_account_id = models.ForeignKey(LoginAccount, on_delete=models.CASCADE)
-    role_id = models.ForeignKey(Roles, on_delete=models.PROTECT)
+    login_account = models.ForeignKey(LoginAccount, on_delete=models.CASCADE)
+    role = models.ForeignKey(Roles, on_delete=models.PROTECT)
+
+class Screen(models.Model):
+    screen_number = models.IntegerField(unique=True)
+    screen_seats_number = models.IntegerField()
+    
+    def __str__(self):
+        r_str = "{0} {1}".format(self.screen_number)
+        return r_str
 
 class Showing(models.Model):
     date = models.DateField(auto_now=False, auto_now_add=False)
     time = models.CharField(max_length=50)
-    film_id = models.ForeignKey(Film, on_delete=models.CASCADE)
+    film = models.ForeignKey(Film, on_delete=models.CASCADE)
+    screen = models.ManyToManyField(Screen)
+
 
     def __str__(self):
-        r_str = "{0} {1} {2}".format(self.film_id, self.time, self.date)
-        return r_str
-
-class Screen(models.Model):
-    screen_number = models.IntegerField()
-    screen_seats_number = models.IntegerField()
-    showings_id = models.ManyToManyField(Showing, blank=True)
-    
-    def __str__(self):
-        r_str = "{0} {1} {2}".format(self.screen_number, self.screen_seats_number, self.showings_id )
+        r_str = "{0} {1} {2}".format(self.film, self.time, self.date)
         return r_str
 
 class BookedTickets(models.Model):
-    booking_id = models.ForeignKey(Booking, on_delete=models.CASCADE)
-    ticket_type_id = models.ForeignKey(TicketType, on_delete=models.CASCADE)
-    screen_showing_id = models.ForeignKey(Showing, on_delete=models.CASCADE)
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
+    ticket_type = models.ForeignKey(TicketType, on_delete=models.CASCADE)
+    screen_showing = models.ForeignKey(Showing, on_delete=models.CASCADE)
 
     def __str__(self):
-        r_str = "{0} {1} {2}".format(self.booking_id, self.ticket_type_id, self.screen_showing_id)
+        r_str = "{0} {1} {2}".format(self.booking, self.ticket_type, self.screen_showing)
         return r_str
 

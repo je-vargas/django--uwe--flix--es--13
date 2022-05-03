@@ -65,6 +65,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries':{
+                'navbar_tag': 'uwe_flix.templatetags.navbar_tag',
+            }
         },
     },
 ]
@@ -124,7 +127,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'films/static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = 'login'
+LOGIN_URL = 'login-user'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home' 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
