@@ -5,7 +5,7 @@
 
     <form action="" method="post">{% csrf_token %}
         <p>This will permanently delete the showing from the Database, proceed?</p>
-        <p>{{ showing.film_id }}</p>
+        <p>{{ showing.film }}</p>
         <p>"{{ showing.time }}"</p>
         <p>{{ showing.date }}</p>
         <input type="submit" value="Confirm" class='btn btn-primary'/>

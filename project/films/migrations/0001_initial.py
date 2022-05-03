@@ -123,7 +123,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('date', models.DateField()),
                 ('time', models.TimeField()),
-                ('film_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='films.film')),
+                ('film', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='films.film')),
             ],
         ),
         migrations.CreateModel(

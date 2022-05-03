@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   
+    <p>Accounts</p> 
+
+    {% for user in account %}
+        <p>
+        {{user.username}}
+        {{user.email}}
+        {{user.first_name}}
+        {{user.last_name}}
+        </p>
+        <a href="{% url update user.pk %}">Update Account</a>
+        <a href="{% url delete user.pk %}">Delete Account</a>
+        <br>
+        <br>
+    {% endfor %}
+
+{% endblock %}

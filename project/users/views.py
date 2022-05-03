@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
+from django.forms.models import model_to_dict
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Group, User
@@ -8,9 +9,10 @@ from django.views import generic
 
 from decorators import unauthenticated_user, allowed_users
 from access import * 
-from .forms import RegisterUserForm
+from .forms import *
 from .models import *
 
+#* ------------------ AUTHENTICATION ---------------------
 @unauthenticated_user 
 def login_user(request):    
     if request.method == "POST":
@@ -81,9 +83,8 @@ def register_clubrep_user(request):
             user_form.groups.add(group)
 
             user = authenticate(request, username=username, password=password)
-            login(request, user)
             messages.success(request, ("Registration Sucessfull!"))
-            return redirect('home')
+            return redirect('club-accounts')
         else:
             error = list(form.errors.keys())
             form_errors = form.errors.get(error[0])
@@ -134,5 +135,90 @@ def register_backoffice_user(request):
     })
 
 
+#* ------------------ ACCOUNTS ---------------------
 
-   
+@allowed_users(['cinema manager'])
+def get_clubRep_accounts(request):
+    account = User.objects.filter(groups__name='club rep')
+    
+    return render(request, "users/accounts.html" , {
+        'account': account,
+        'update':'club-update',
+        'delete':'club-delete',
+    })
+
+@allowed_users(['cinema manager'])
+def update_clubRep_accounts(request, pk):
+
+    account_obj = get_object_or_404(User, pk=pk)
+    if request.method == 'POST':
+        form = AccountUpdateForm(request.POST or None, instance = account_obj)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Club Rep account sucessfully updated')
+            return redirect('club-accounts')
+
+    else: form = AccountUpdateForm(instance = account_obj)
+    
+    return render(request, 'users/account_update.html', {
+        "form":form,
+        })
+    
+@allowed_users(['cinema manager'])
+def delete_clubRep_accounts(request, pk):
+
+    account_obj = get_object_or_404(User, pk=pk)
+
+    if request.method == 'POST':
+
+        account_obj.delete()
+        messages.success(request, 'Account sucessfully deleted')
+        return redirect('club-accounts')
+    
+    return render(request, 'users/account_delete.html', {
+        "account":account_obj
+    })
+
+@allowed_users(['cinema manager'])
+def get_student_accounts(request):
+    account = User.objects.filter(groups__name='student')
+    
+    return render(request, "users/accounts.html" , {
+        'account': account,
+        'update':'student-update',
+        'delete':'student-delete',
+    })
+
+@allowed_users(['cinema manager', 'staff'])
+def update_student_accounts(request, pk):
+    
+    account_obj = get_object_or_404(User, pk=pk)
+    
+    if request.method == 'POST':
+        form = AccountUpdateForm(request.POST or None, instance = account_obj)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Student account sucessfully updated')
+            return redirect('student-accounts')
+    
+    else: form = AccountUpdateForm(instance = account_obj)
+    
+    return render(request, 'users/account_update.html', {
+        "form":form,
+        })
+
+@allowed_users(['cinema manager', 'staff'])
+def delete_student_accounts(request, pk):
+    account_obj = get_object_or_404(User, pk=pk)
+
+    if request.method == 'POST':
+
+        account_obj.delete()
+        messages.success(request, 'Account sucessfully deleted')
+        return redirect('student-accounts')
+    
+    return render(request, 'users/account_delete.html', {
+        "account":account_obj
+    })

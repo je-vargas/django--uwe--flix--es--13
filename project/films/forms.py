@@ -18,7 +18,7 @@ class NewFilmsForm(forms.ModelForm):
     title = forms.CharField(max_length=300, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
     age_rating = forms.ChoiceField(choices=FILM_AGE, required=True, widget=forms.Select(attrs={'class':'form-control'}))
     film_description = forms.CharField(max_length=500, required=True, widget=forms.Textarea(attrs={'class':'form-control'}))
-    duration = forms.CharField(max_length=6, required=True, validators=[TIME_REGEX] ,widget=forms.TextInput(attrs={'class':'form-control'}))
+    duration = forms.IntegerField(required=True, widget=forms.NumberInput(attrs={'class':'form-control'}))
     release_date = forms.DateField(required=True, widget=DateCustomWidget(attrs={'class':'form-control'}))
 
     class Meta:
@@ -43,11 +43,11 @@ class NewShowingsForm(forms.ModelForm):
     
     class Meta:
         model = Showing
-        fields = ('film_id','time', 'date')
+        fields = ('film','time', 'date')
 
     def __init__(self, *args, **kwargs):
         super(NewShowingsForm, self).__init__(*args, **kwargs)
-        self.fields['film_id'].widget.attrs['class'] = 'form-control'
+        self.fields['film'].widget.attrs['class'] = 'form-control'
         self.fields['time'].widget.attrs['class'] = 'form-control'
         self.fields['date'].widget.attrs['class'] = 'form-control'
 
@@ -60,13 +60,12 @@ class NewScreenForm(forms.ModelForm):
 
     class Meta:
         model = Screen
-        fields = ('screen_number', 'screen_seats_number', 'showings_id')
+        fields = ('screen_number', 'screen_seats_number')
 
     def __init__(self, *args, **kwargs):
         super(NewScreenForm, self).__init__(*args, **kwargs)
         self.fields['screen_number'].widget.attrs['class'] = 'form-control'
         self.fields['screen_seats_number'].widget.attrs['class'] = 'form-control'
-        self.fields['showings_id'].widget.attrs['class'] = 'form-control'
 
     def clean(self):
         screen_number = self.cleaned_data['screen_number']
