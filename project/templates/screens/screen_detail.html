@@ -5,9 +5,8 @@
         <div class="post-entry">
             
             <h1 class='display-3'>{{ film.title }}</h1>
-            <p>{{ screen.screen_number }}</p>
-            <p>{{ screen.screen_seats_number }}</p>
-            <p>{{ screen.showing_id }}</p>
+            <p>{{ screen.number }}</p>
+            <p>{{ screen.capacity }}</p>
             
             <a href={% url 'screen-update' screen.pk %} class="btn btn-secondary" role="button">Edit Screen Details</a>
             <a href={% url 'screen-delete' screen.pk %} class="btn btn-danger" role="button">Delete Screen</a>
