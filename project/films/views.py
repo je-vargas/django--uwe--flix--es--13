@@ -94,6 +94,7 @@ class FilmsDeleteView(LoginRequiredMixin, DeleteView):
             return redirect('home')
         return render(self.request, 'showings/film_delete.html')
 
+
 @allowed_users(['cinema manager', 'staff'])
 def showingsNewView(request):
 
@@ -102,11 +103,6 @@ def showingsNewView(request):
     if request.method == "POST":
         
         if form.is_valid():
-            date = form.cleaned_data['date'],
-            time = form.cleaned_data['time'],
-            film = form.cleaned_data['film']
-
-            print(f"time: {time}\ndate: {date}\nfilm: {film}")
 
             showing = form.save()
 
@@ -262,8 +258,8 @@ class ScreenNewView(LoginRequiredMixin, CreateView):
             else: 
                 return render(request, 'screens/screen_new.html', {
                     'form':form,
-                    'screen_number':request.POST.get('screen_number'), 
-                    'screen_sscreen_seats_number':request.POST.get('screen_sscreen_seats_number'),
+                    'screen_number':request.POST.get('number'), 
+                    'screen_seats_number':request.POST.get('capacity'),
                 })
         
         new_screen = forms.NewScreenForm()

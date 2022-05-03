@@ -1,6 +1,5 @@
 from django.contrib import admin
 from .models import (
-    LoginAccount, 
     Film, 
     Showing, 
     Screen, 
@@ -11,7 +10,6 @@ from .models import (
     CardDetails
     )
 
-admin.site.register(LoginAccount)
 admin.site.register(Film)
 admin.site.register(Showing)
 admin.site.register(Screen)
