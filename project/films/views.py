@@ -104,9 +104,9 @@ def showingsNewView(request):
         if form.is_valid():
             date = form.cleaned_data['date'],
             time = form.cleaned_data['time'],
-            film_id = form.cleaned_data['film_id']
+            film = form.cleaned_data['film']
 
-            print(f"time: {time}\ndate: {date}\nfilm: {film_id}")
+            print(f"time: {time}\ndate: {date}\nfilm: {film}")
 
             showing = form.save()
 
@@ -114,7 +114,7 @@ def showingsNewView(request):
         else:
             return render(request, 'showings/showing_new.html', {
                 "form":form,
-                "film_id":request.POST.get('form-0-film-id'),
+                "film":request.POST.get('form-0-film-id'),
                 "time":request.POST.get('form-1-time'),
                 "date":request.POST.get('form-2-date')
                 })
@@ -264,7 +264,6 @@ class ScreenNewView(LoginRequiredMixin, CreateView):
                     'form':form,
                     'screen_number':request.POST.get('screen_number'), 
                     'screen_sscreen_seats_number':request.POST.get('screen_sscreen_seats_number'),
-                    'showings_id':request.POST.get('showings_id'),
                 })
         
         new_screen = forms.NewScreenForm()
