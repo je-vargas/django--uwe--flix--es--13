@@ -5,17 +5,22 @@ from django import forms
 from .models import Club
 
 BACKOFFICE_ROLES = (('cinema manager','Cinema Manager'), ('accounts manager', 'Accounts Manager'))
-PHONE_REGEX = RegexValidator('^(?:0|\+?44)\s?(?:\d\s?){9,11}$', message='Please enter a valid mobile number. +447751991020')
+PHONE_REGEX = RegexValidator('^(?:0|\+?44)\s?(?:\d\s?){9,11}$', message='Please enter a valid mobile number starting with +44... or 0... ')
+
+class DateCustomWidget(forms.DateInput):
+    input_type = 'date'
 class RegisterUserForm(UserCreationForm):
 
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control'}))
     first_name = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
     last_name = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
+    dob = forms.DateField(required=True, widget=DateCustomWidget(attrs={'class':'form-control'}))
     role = forms.ChoiceField(choices=BACKOFFICE_ROLES, required=False, widget=forms.Select(attrs={'class':'form-control'}))
+    club = forms.ModelChoiceField(queryset=Club.objects.all(), required=False, widget=forms.Select(attrs={'class':'form-control'}))
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name', 'role', 'password1', 'password2')
+        fields = ('username', 'email', 'first_name', 'last_name', 'dob' , 'club' ,'role', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super(RegisterUserForm, self).__init__(*args, **kwargs)
@@ -62,7 +67,7 @@ class AccountUpdateBackOfficeForm(UserChangeForm):
         self.fields['email'].widget.attrs['class'] = 'form-control'
         self.fields['role'].widget.attrs['class'] = 'form-control'
 
-class RegisterClub(forms.ModelForm):
+class RegisterClubForm(forms.ModelForm):
     name = forms.CharField(max_length=300, required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control'}))
     mobile = forms.CharField(max_length=15, required=False, validators=[PHONE_REGEX],widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -76,7 +81,7 @@ class RegisterClub(forms.ModelForm):
         fields = ('name', 'email', 'mobile', 'landline', 'house_number', 'street', 'city', 'postcode')
 
     def __init__(self, *args, **kwargs):
-        super(RegisterClub, self).__init__(*args, **kwargs)
+        super(RegisterClubForm, self).__init__(*args, **kwargs)
         self.fields['name'].widget.attrs['class'] = 'form-control'
         self.fields['email'].widget.attrs['class'] = 'form-control'
         self.fields['mobile'].widget.attrs['class'] = 'form-control'
