@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <p>Club Registration</p> 
+
+    {% if form.errors %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {% for error in form_errors %}
+        {{error}}
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+
+    <form method="POST" >
+        {% csrf_token %}
+
+        <p>{{form.name.label}}</p>
+        <p>{{form.name}}</p>
+
+        <p>{{form.email.label}}</p>
+        <p>{{form.email}}</p>
+
+        <p>{{form.mobile.label}}</p>
+        <p>{{form.mobile}}</p>
+
+        <p>{{form.landline.label}}</p>
+        <p>{{form.landline}}</p>
+        
+        <p>{{form.house_number.label}}</p>
+        <p>{{form.house_number}}</p>
+        
+        <p>{{form.street.label}}</p>
+        <p>{{form.street}}</p>
+        
+        <p>{{form.city.label}}</p>
+        <p>{{form.city}}</p>
+        
+        <p>{{form.postcode.label}}</p>
+        <p>{{form.postcode}}</p>
+
+        <input type="submit" value="Register" class="btn btn-primary">
+        <a href="{% url 'clubs' %}" class="btn btn-dark">Back</a>
+    </form>
+
+
+{% endblock %}

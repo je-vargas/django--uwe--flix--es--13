@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>Existing Clubs</p>
+    {% for club in clubs  %}
+        <p>
+        {{ club.name }}
+        {{ club.email }}
+        {{ club.mobile }}
+        {{ club.landline }}
+        {{ club.house_number }}
+        {{ club.street }}
+        {{ club.city }}
+        {{ club.postcode }}
+        </p>
+        <a href="{% url 'club-update' club.pk %}">Update Club</a>
+        <a href="{% url 'club-delete' club.pk %}">Delete Club</a>
+        <br>
+        <br>
+    {% endfor %}
+{% endblock content %}
