@@ -1,8 +1,11 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 from django import forms
+from .models import Club
 
 BACKOFFICE_ROLES = (('cinema manager','Cinema Manager'), ('accounts manager', 'Accounts Manager'))
+PHONE_REGEX = RegexValidator('^(?:0|\+?44)\s?(?:\d\s?){9,11}$', message='Please enter a valid mobile number. +447751991020')
 class RegisterUserForm(UserCreationForm):
 
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control'}))
@@ -59,6 +62,29 @@ class AccountUpdateBackOfficeForm(UserChangeForm):
         self.fields['email'].widget.attrs['class'] = 'form-control'
         self.fields['role'].widget.attrs['class'] = 'form-control'
 
+class RegisterClub(forms.ModelForm):
+    name = forms.CharField(max_length=300, required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control'}))
+    mobile = forms.CharField(max_length=15, required=False, validators=[PHONE_REGEX],widget=forms.TextInput(attrs={'class':'form-control'}))
+    landline = forms.CharField(max_length=15, required=False, validators=[PHONE_REGEX], widget=forms.TextInput(attrs={'class':'form-control'}))
+    house_number = forms.CharField(max_length=300, required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
+    street = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
+    city = forms.CharField(max_length=300, required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
+    postcode = forms.CharField(max_length=15, required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
+    class Meta:
+        model = Club
+        fields = ('name', 'email', 'mobile', 'landline', 'house_number', 'street', 'city', 'postcode')
+
+    def __init__(self, *args, **kwargs):
+        super(RegisterClub, self).__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['class'] = 'form-control'
+        self.fields['email'].widget.attrs['class'] = 'form-control'
+        self.fields['mobile'].widget.attrs['class'] = 'form-control'
+        self.fields['landline'].widget.attrs['class'] = 'form-control'
+        self.fields['house_number'].widget.attrs['class'] = 'form-control'
+        self.fields['street'].widget.attrs['class'] = 'form-control'
+        self.fields['city'].widget.attrs['class'] = 'form-control'
+        self.fields['postcode'].widget.attrs['class'] = 'form-control'
 
 
     
