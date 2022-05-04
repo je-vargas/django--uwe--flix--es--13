@@ -17,6 +17,6 @@ urlpatterns = [
 
     path('register/clubs', register_club , name='register-club'),
     path('clubs/', get_clubs , name='clubs'),
-    path('clubs/<int:pk>/update', delete_club , name='club-update'),
-    path('clubs/<int:pk>/delete', update_club , name='club-delete'),
+    path('clubs/<int:pk>/update', update_club , name='club-update'),
+    path('clubs/<int:pk>/delete', delete_club , name='club-delete'),
 ]
