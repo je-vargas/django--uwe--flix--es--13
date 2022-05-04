@@ -25,9 +25,14 @@ class RegisterUserForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(RegisterUserForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['class'] = 'form-control'
+        self.fields['email'].widget.attrs['class'] = 'form-control'
+        self.fields['first_name'].widget.attrs['class'] = 'form-control'
+        self.fields['last_name'].widget.attrs['class'] = 'form-control'
+        self.fields['dob'].widget.attrs['class'] = 'form-control'
+        self.fields['club'].widget.attrs['class'] = 'form-control'
+        self.fields['role'].widget.attrs['class'] = 'form-control'
         self.fields['password1'].widget.attrs['class'] = 'form-control'
         self.fields['password2'].widget.attrs['class'] = 'form-control'
-        self.fields['role'].widget.attrs['class'] = 'form-control'
         
 class AccountUpdateForm(UserChangeForm):
     
@@ -35,17 +40,24 @@ class AccountUpdateForm(UserChangeForm):
     first_name = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
     last_name = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control'}))
+    dob = forms.DateField(required=True, widget=DateCustomWidget(attrs={'class':'form-control'}))
+    club = forms.ModelChoiceField(queryset=Club.objects.all(), required=False, widget=forms.Select(attrs={'class':'form-control'}))
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('username', 'email', 'first_name', 'last_name', 'dob', 'club' )
 
     def __init__(self, *args, **kwargs):
         super(AccountUpdateForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['class'] = 'form-control'
+        self.fields['email'].widget.attrs['class'] = 'form-control'
         self.fields['first_name'].widget.attrs['class'] = 'form-control'
         self.fields['last_name'].widget.attrs['class'] = 'form-control'
-        self.fields['email'].widget.attrs['class'] = 'form-control'
+        self.fields['dob'].widget.attrs['class'] = 'form-control'
+        self.fields['club'].widget.attrs['class'] = 'form-control'
+        self.fields['role'].widget.attrs['class'] = 'form-control'
+        self.fields['password1'].widget.attrs['class'] = 'form-control'
+        self.fields['password2'].widget.attrs['class'] = 'form-control'
 
 class AccountUpdateBackOfficeForm(UserChangeForm):
 
