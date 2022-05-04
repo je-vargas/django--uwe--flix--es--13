@@ -84,7 +84,7 @@ def register_clubrep_user(request):
 
             user = authenticate(request, username=username, password=password)
             messages.success(request, ("Registration Sucessfull!"))
-            return redirect('club-accounts')
+            return redirect('clubrep-accounts')
         else:
             error = list(form.errors.keys())
             form_errors = form.errors.get(error[0])
@@ -143,8 +143,8 @@ def get_clubRep_accounts(request):
     
     return render(request, "users/accounts.html" , {
         'account': account,
-        'update':'club-update',
-        'delete':'club-delete',
+        'update':'clubrep-update',
+        'delete':'clubrep-delete',
     })
 
 @allowed_users(['cinema manager'])
@@ -157,7 +157,7 @@ def update_clubRep_accounts(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Club Rep account sucessfully updated')
-            return redirect('club-accounts')
+            return redirect('clubrep-accounts')
 
     else: form = AccountUpdateForm(instance = account_obj)
     
@@ -174,7 +174,7 @@ def delete_clubRep_accounts(request, pk):
 
         account_obj.delete()
         messages.success(request, 'Account sucessfully deleted')
-        return redirect('club-accounts')
+        return redirect('clubrep-accounts')
     
     return render(request, 'users/account_delete.html', {
         "account":account_obj
@@ -222,3 +222,47 @@ def delete_student_accounts(request, pk):
     return render(request, 'users/account_delete.html', {
         "account":account_obj
     })
+
+
+@allowed_users(['cinema manager', 'staff'])
+def register_club(request):
+    error=None
+    form_errors=None
+
+    if request.method == "POST":
+        form = RegisterClub(request.POST)
+
+        if form.is_valid():
+            club_form = form.save()
+            messages.success(request, "Club Registration Sucessfull!")
+            return redirect('clubs')
+        else:
+            error = list(form.errors.keys())
+            form_errors = form.errors.get(error[0])
+    else: 
+        form = RegisterClub()
+
+    return render(request, "users/register_club.html", {
+        'form':form,
+        'form_errors': form_errors
+    })
+
+@allowed_users(['cinema manager', 'staff'])
+def get_clubs(request):
+
+    clubs = Club.objects.all()
+    
+    return render(request, "users/clubs.html" , {
+        'clubs': clubs,
+        'update':'club-update',
+        'delete':'club-delete',
+    })
+
+
+@allowed_users(['cinema manager', 'staff'])
+def update_club(request, pk):
+    pass
+
+@allowed_users(['cinema manager', 'staff'])
+def delete_club(request, pk):
+    pass
