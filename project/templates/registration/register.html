@@ -45,6 +45,10 @@
                 {{ form.role }}
             </p>
             <p>
+                {{ form.dob.label }}
+                {{ form.dob }}
+            </p>
+            <p>
                 {{ form.password1.label }}
                  {{ form.password1 }}
             </p>
@@ -81,6 +85,16 @@
                 {{ form.last_name }}
             </p>
             <p>
+                {{ form.dob.label }}
+                {{ form.dob }}
+            </p>
+            <p>
+                {{ form.club.label }}
+                {{ form.club }}
+            </p>
+            
+            <p>No club? No worries register a club <a href="{% url 'register-club' %}">here</a></p>
+            <p>
                 {{ form.password1.label }}
                 {{ form.password1 }}
             </p>
@@ -114,6 +128,10 @@
             <p>
                 {{ form.last_name.label }}
                 {{ form.last_name }}
+            </p>
+            <p>
+                {{ form.dob.label }}
+                {{ form.dob }}
             </p>
             <p>
                 {{ form.password1.label }}

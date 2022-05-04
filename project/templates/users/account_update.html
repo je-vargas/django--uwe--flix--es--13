@@ -17,9 +17,12 @@
 
     <p>{{form.last_name.label}}</p>
     <p>{{form.last_name}}</p>
+    
+    <p>{{form.dob.label}}</p>
+    <p>{{form.dob}}</p>
 
     <input type="submit" value="Update" class="btn btn-primary">
-    <a href="{% url 'club-accounts' %}" class="btn btn-dark">Back</a>
+    <a href="{% url 'clubrep-accounts' %}" class="btn btn-dark">Back</a>
 </form>
 
 {% endblock  %}

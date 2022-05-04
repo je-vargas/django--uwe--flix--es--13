@@ -1,5 +1,5 @@
 from django import forms 
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 
 from .models import *
@@ -18,7 +18,7 @@ class NewFilmsForm(forms.ModelForm):
     title = forms.CharField(max_length=300, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
     age_rating = forms.ChoiceField(choices=FILM_AGE, required=True, widget=forms.Select(attrs={'class':'form-control'}))
     film_description = forms.CharField(max_length=500, required=True, widget=forms.Textarea(attrs={'class':'form-control'}))
-    duration = forms.IntegerField(required=True, widget=forms.NumberInput(attrs={'class':'form-control'}))
+    duration = forms.IntegerField(required=True, validators=[MinValueValidator(0)],  widget=forms.NumberInput(attrs={'class':'form-control'}))
     release_date = forms.DateField(required=True, widget=DateCustomWidget(attrs={'class':'form-control'}))
 
     class Meta:
@@ -43,7 +43,7 @@ class NewShowingsForm(forms.ModelForm):
     
     class Meta:
         model = Showing
-        fields = ('film','time', 'date')
+        fields = ('film', 'screen','time', 'date')
 
     def __init__(self, *args, **kwargs):
         super(NewShowingsForm, self).__init__(*args, **kwargs)
@@ -55,24 +55,25 @@ class UpdateShowingForm(NewShowingsForm): pass
 
 class NewScreenForm(forms.ModelForm):
 
-    screen_number = forms.IntegerField(required=True, widget=forms.NumberInput(attrs={'class':'form-control'}))
-    screen_seats_number = forms.IntegerField( required=True, widget=forms.NumberInput(attrs={'class':'form-control'}))
+    number = forms.IntegerField(required=True, validators=[MinValueValidator(1)], widget=forms.NumberInput(attrs={'class':'form-control'}))
+    capacity = forms.IntegerField( required=True, validators=[MinValueValidator(1)], widget=forms.NumberInput(attrs={'class':'form-control'}))
 
     class Meta:
         model = Screen
-        fields = ('screen_number', 'screen_seats_number')
+        fields = ('number', 'capacity')
 
     def __init__(self, *args, **kwargs):
         super(NewScreenForm, self).__init__(*args, **kwargs)
-        self.fields['screen_number'].widget.attrs['class'] = 'form-control'
-        self.fields['screen_seats_number'].widget.attrs['class'] = 'form-control'
+        self.fields['number'].widget.attrs['class'] = 'form-control'
+        self.fields['capacity'].widget.attrs['class'] = 'form-control'
 
     def clean(self):
-        screen_number = self.cleaned_data['screen_number']
+        if self.cleaned_data == {}: return
+        number = self.cleaned_data['number']
 
-        if Screen.objects.filter(screen_number=screen_number).exists(): 
+        if Screen.objects.filter(number=number).exists(): 
             raise ValidationError(('Screen already exists'), code='invalid')
-        return screen_number
+        return
 
     
 
