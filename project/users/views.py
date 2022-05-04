@@ -153,11 +153,14 @@ def update_clubRep_accounts(request, pk):
     account_obj = get_object_or_404(User, pk=pk)
     if request.method == 'POST':
         form = AccountUpdateForm(request.POST or None, instance = account_obj)
+        if form.has_changed():
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Club Rep account sucessfully updated')
+                return redirect('clubrep-accounts')
 
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Club Rep account sucessfully updated')
-            return redirect('clubrep-accounts')
+        else: messages.warning(request, 'No changes were detected')
+
 
     else: form = AccountUpdateForm(instance = account_obj)
     
@@ -197,12 +200,13 @@ def update_student_accounts(request, pk):
     
     if request.method == 'POST':
         form = AccountUpdateForm(request.POST or None, instance = account_obj)
-
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Student account sucessfully updated')
-            return redirect('student-accounts')
-    
+        if form.has_changed():
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Student account sucessfully updated')
+                return redirect('student-accounts')
+        else: messages.warning(request, 'No changes were detected')   
+            
     else: form = AccountUpdateForm(instance = account_obj)
     
     return render(request, 'users/account_update.html', {
@@ -230,7 +234,7 @@ def register_club(request):
     form_errors=None
 
     if request.method == "POST":
-        form = RegisterClub(request.POST)
+        form = RegisterClubForm(request.POST)
 
         if form.is_valid():
             club_form = form.save()
@@ -240,7 +244,7 @@ def register_club(request):
             error = list(form.errors.keys())
             form_errors = form.errors.get(error[0])
     else: 
-        form = RegisterClub()
+        form = RegisterClubForm()
 
     return render(request, "users/register_club.html", {
         'form':form,
@@ -261,8 +265,31 @@ def get_clubs(request):
 
 @allowed_users(['cinema manager', 'staff'])
 def update_club(request, pk):
-    pass
+    club_obj = get_object_or_404(Club, pk=pk)
+    
+    if request.method == 'POST':
+        form = RegisterClubForm(request.POST or None, instance = club_obj)
+        if form.has_changed():
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Club sucessfully updated')
+                return redirect('clubs')
+        else: messages.warning(request, 'No changes were detected')
+        
+    else: form = RegisterClubForm(instance = club_obj)
+    
+    return render(request, 'users/club_update.html', {"form":form})
+    
 
 @allowed_users(['cinema manager', 'staff'])
 def delete_club(request, pk):
-    pass
+    club_obj = get_object_or_404(Club, pk=pk)
+
+    if request.method == 'POST':
+        club_obj.delete()
+        messages.success(request, 'Club sucessfully deleted')
+        return redirect('clubs')
+    
+    return render(request, 'users/club_delete.html', {
+        "club":club_obj
+    })
