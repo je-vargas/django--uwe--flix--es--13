@@ -32,9 +32,10 @@ class Showing(models.Model):
     time = models.CharField(max_length=50)
     film = models.ForeignKey(Film, on_delete=models.CASCADE)
     screen = models.ForeignKey(Screen, on_delete=models.CASCADE)
+    capacity = models.IntegerField()
 
     def __str__(self):
-        r_str = "{0} {1} {2}".format(self.film, self.time, self.date)
+        r_str = "{0} {1} {2} {3}".format(self.film, self.time, self.date, self.screen)
         return r_str
 
 

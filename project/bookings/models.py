@@ -23,22 +23,14 @@ class Account(models.Model):
     def __str__(self):
         return self.account_title + " " + self.account_discount
 
-
 class Booking(models.Model):
+    ticket = models.ForeignKey(TicketType, on_delete=models.PROTECT)
     booking_cost = models.IntegerField(null=False)
     number_of_tickets = models.IntegerField(null=False)
+    showing = models.ForeignKey('films.Showing', on_delete=models.PROTECT)
     
     def __str__(self):
-        r_str = "{0} {1}".format(self.booking_cost, self.number_of_tickets)
-        return r_str
-
-class BookedTickets(models.Model):
-    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
-    ticket_type = models.ForeignKey(TicketType, on_delete=models.CASCADE)
-    screen_showing = models.ForeignKey('films.Showing', on_delete=models.CASCADE)
-
-    def __str__(self):
-        r_str = "{0} {1} {2}".format(self.booking, self.ticket_type, self.screen_showing)
+        r_str = "{0} {1} {2} {3}".format(self.booking_cost, self.number_of_tickets, self.ticket, self.showing)
         return r_str
 
 class LoginTransaction(models.Model):

@@ -40,6 +40,7 @@ class NewShowingsForm(forms.ModelForm):
     
     time = forms.CharField(max_length=50, required=False, validators=[TIME_REGEX] ,widget=forms.TextInput(attrs={'class':'form-control'}))
     date = forms.DateField(required=False, widget=DateCustomWidget(attrs={'class':'form-control'}))
+    screen = forms.ModelChoiceField(queryset=Screen.objects.all())
     
     class Meta:
         model = Showing
