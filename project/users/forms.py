@@ -10,7 +10,7 @@ PHONE_REGEX = RegexValidator('^(?:0|\+?44)\s?(?:\d\s?){9,11}$', message='Please 
 class DateCustomWidget(forms.DateInput):
     input_type = 'date'
 class RegisterUserForm(UserCreationForm):
-
+    username = forms.CharField(max_length=500, required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control'}))
     first_name = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
     last_name = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -55,9 +55,6 @@ class AccountUpdateForm(UserChangeForm):
         self.fields['last_name'].widget.attrs['class'] = 'form-control'
         self.fields['dob'].widget.attrs['class'] = 'form-control'
         self.fields['club'].widget.attrs['class'] = 'form-control'
-        self.fields['role'].widget.attrs['class'] = 'form-control'
-        self.fields['password1'].widget.attrs['class'] = 'form-control'
-        self.fields['password2'].widget.attrs['class'] = 'form-control'
 
 class AccountUpdateBackOfficeForm(UserChangeForm):
 

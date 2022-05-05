@@ -161,7 +161,6 @@ def update_clubRep_accounts(request, pk):
 
         else: messages.warning(request, 'No changes were detected')
 
-
     else: form = AccountUpdateForm(instance = account_obj)
     
     return render(request, 'users/account_update.html', {
