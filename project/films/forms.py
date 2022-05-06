@@ -40,17 +40,18 @@ class NewShowingsForm(forms.ModelForm):
     
     time = forms.CharField(max_length=50, required=False, validators=[TIME_REGEX] ,widget=forms.TextInput(attrs={'class':'form-control'}))
     date = forms.DateField(required=False, widget=DateCustomWidget(attrs={'class':'form-control'}))
-    screen = forms.ModelChoiceField(queryset=Screen.objects.all())
     
     class Meta:
         model = Showing
-        fields = ('film', 'screen','time', 'date')
+        fields = ('film', 'screen','time', 'date', 'price')
 
     def __init__(self, *args, **kwargs):
         super(NewShowingsForm, self).__init__(*args, **kwargs)
         self.fields['film'].widget.attrs['class'] = 'form-control'
         self.fields['time'].widget.attrs['class'] = 'form-control'
         self.fields['date'].widget.attrs['class'] = 'form-control'
+        self.fields['screen'].widget.attrs['class'] = 'form-control'
+        self.fields['price'].widget.attrs['class'] = 'form-control'
 
 class UpdateShowingForm(NewShowingsForm): pass
 

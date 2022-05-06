@@ -12,11 +12,10 @@ from .models import Film, Showing, Screen
 from . import forms
 from decorators import allowed_users
 
-
 class HomePageView(ListView):
-    model = Film
+    model = Showing
     template_name = 'home.html'
-    context_object_name = "all_films"
+    context_object_name = "all_showings"
 
 class FilmsDetailView(DetailView):
     model = Film, User

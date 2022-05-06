@@ -33,6 +33,7 @@ class Showing(models.Model):
     film = models.ForeignKey(Film, on_delete=models.CASCADE)
     screen = models.ForeignKey(Screen, on_delete=models.CASCADE)
     capacity = models.IntegerField()
+    price = models.FloatField()
 
     def __str__(self):
         r_str = "{0} {1} {2} {3}".format(self.film, self.time, self.date, self.screen)
