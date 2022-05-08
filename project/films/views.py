@@ -103,7 +103,9 @@ def showingsNewView(request):
         
         if form.is_valid():
 
-            showing = form.save()
+            showing = form.save(commit=False)
+            showing.capacity = showing.screen.capacity
+            showing.save()
 
             return redirect('showing-all')
         else:
