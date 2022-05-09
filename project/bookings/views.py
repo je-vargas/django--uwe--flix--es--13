@@ -19,15 +19,22 @@ def bookingDiscount(discount, booking_total):
     rate = 1-(discount/100)
     return booking_total*rate
 
+def getBookingForm(request):
+    if request.user.groups.exists():
+        user_role = get_user_groups(request)
+    
+        if 'club rep' in user_role : return NewBookingClubRepForm(request.POST or None)
+    
+    return NewBookingForm(request.POST or None) 
+
 def getBookings(request, pk): 
     return HttpResponse(f'needs implementing user: {pk}')
 
-@allowed_users(['club reps', 'student'])
+@allowed_users(['club rep', 'student'])
 def newBooking(request, pk):
 
     showing_obj = get_object_or_404(Showing, pk=pk)
-
-    form = NewBookingForm(request.POST or None)
+    form = getBookingForm(request)
     
     if request.method == "POST":
         
@@ -52,7 +59,7 @@ def newBooking(request, pk):
                 })
     else:
         print(request)
-        form = NewBookingForm()
+        form = getBookingForm(request)
         return render(request, 'bookings/new_booking.html', {
             'showing':showing_obj,
             'form':form
@@ -70,7 +77,7 @@ def payment(request, pk):
     discount = account_obj.account_discount
     booking_total = booking_obj.cost
     
-    booking_with_discount = 0
+    booking_with_discount = booking_obj.discount_cost
 
     #* check if discount has already been applied to this booking
     if booking_obj.is_discount_applied is not True and 'club rep' in user_role :
@@ -110,7 +117,7 @@ def payment(request, pk):
     else:
         form = PaymentForm()
         return render(request, 'bookings/payment.html', {
-            "discount": account_obj.account_discount,
+            "discount": discount,
             "booking_total": booking_total,
             "booking_with_discount": booking_with_discount,
             'form':form

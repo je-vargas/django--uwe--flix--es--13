@@ -6,11 +6,11 @@
     <p class="h3">Payment</p>
     {% if user.is_authenticated %}
         {% if user|has_group:'club rep'%}
-            <p class="h4">Original Booking Fee: £{{ booking_total }}%</p>
-            <p class="h4">Account Discount: {{ discount }}%</p>
-            <p class="h4"> Total After Discount: £{{ booking_discount }}</p>
+            <p class="h5">Original Booking Fee: £{{ booking_total }}</p>
+            <p class="h5">Account Discount: {{ discount }}%</p>
+            <p class="h5"> Total After Discount: £{{ booking_with_discount }}</p>
         {% elif user|has_group:'student' %}
-            <p class="h4">Booking Total: £{{ booking_total }}</p>
+            <p class="h5">Booking Total: £{{ booking_total }}</p>
         {% endif %}
     {% endif %}
     <form method="POST">

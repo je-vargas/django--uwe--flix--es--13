@@ -19,6 +19,10 @@ class NewBookingForm(forms.ModelForm):
         self.fields['ticket'].widget.attrs['class'] = 'form-control'
         self.fields['number_of_tickets'].widget.attrs['class'] = 'form-control'
 
+class NewBookingClubRepForm(NewBookingForm):
+    number_of_tickets = forms.IntegerField(required=True, validators=[MinValueValidator(1, message="Minimum booking required is 1 ticket"), MaxValueValidator(10, message="Maximum booking permited is 10 tickets"
+    )], widget=forms.NumberInput(attrs={'class':'form-control'}))
+
 class PaymentForm(forms.ModelForm):
     
     valid_card = RegexValidator("[0-9]{16}", message='Invalid card number, must be 16 digits long')
