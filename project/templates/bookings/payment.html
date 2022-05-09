@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load navbar_tag %}
+
+{% block content %}
+<div class="container">
+    <p class="h3">Payment</p>
+    {% if user.is_authenticated %}
+        {% if user|has_group:'club rep'%}
+            <p class="h4">Original Booking Fee: £{{ booking_total }}%</p>
+            <p class="h4">Account Discount: {{ discount }}%</p>
+            <p class="h4"> Total After Discount: £{{ booking_discount }}</p>
+        {% elif user|has_group:'student' %}
+            <p class="h4">Booking Total: £{{ booking_total }}</p>
+        {% endif %}
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Pay" class="btn btn-primary">
+    </form>
+    
+</div>
+
+{% endblock content %}
