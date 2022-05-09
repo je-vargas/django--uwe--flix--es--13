@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class TicketType(models.Model):
     ticket = models.CharField(max_length=20, null=False)
@@ -7,7 +8,7 @@ class TicketType(models.Model):
         return self.ticket
 
 class CardDetails(models.Model):
-    card_number = models.BigIntegerField(null=False)
+    card_number = models.CharField(max_length=19, null=False)
     expiry_date = models.DateField(null=False)
 
     def __str__(self):
@@ -17,27 +18,35 @@ class CardDetails(models.Model):
 
 class Account(models.Model):
     account_title = models.CharField(max_length=50, null=False)
-    account_discount = models.BigIntegerField(null=True)
-    card_details = models.ForeignKey(CardDetails, on_delete=models.PROTECT)
+    account_discount = models.FloatField(null=False, default=0)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    card_details = models.ForeignKey(CardDetails, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return self.account_title + " " + self.account_discount
 
 class Booking(models.Model):
     ticket = models.ForeignKey(TicketType, on_delete=models.PROTECT)
-    booking_cost = models.IntegerField(null=False)
     number_of_tickets = models.IntegerField(null=False)
+    cost = models.IntegerField(null=False)
+    discount_cost = models.IntegerField(null=False, default=0)
     showing = models.ForeignKey('films.Showing', on_delete=models.PROTECT)
+    is_discount_applied = models.BooleanField(null=True, default=False)
     
     def __str__(self):
-        r_str = "{0} {1} {2} {3}".format(self.booking_cost, self.number_of_tickets, self.ticket, self.showing)
+        r_str = "{0} {1} {2} {3}".format(self.cost, self.number_of_tickets, self.ticket, self.showing)
         return r_str
 
 class LoginTransaction(models.Model):
     date_of_payment = models.DateTimeField(null=False)
     booking = models.ForeignKey(Booking, on_delete=models.PROTECT)
     account = models.ForeignKey(Account, on_delete=models.PROTECT)
-    club = models.ForeignKey('users.Club', on_delete=models.PROTECT)
+    discount_at_purchase = models.FloatField()
+    card_number = models.CharField(null=False, max_length=19)
+
+    def __str__(self):
+        r_str = "Payment made: {0}\nBooking: {1}\nAccount: {2}".format(self.date_of_payment, self.booking, self.account)
+        return r_str
     
 class GuessTransaction(models.Model):
     date_of_payment = models.DateTimeField(null=False)
