@@ -33,6 +33,9 @@ class RegisterUserForm(UserCreationForm):
         self.fields['role'].widget.attrs['class'] = 'form-control'
         self.fields['password1'].widget.attrs['class'] = 'form-control'
         self.fields['password2'].widget.attrs['class'] = 'form-control'
+
+class RegisterClubRepForm(RegisterUserForm):
+    club = forms.ModelChoiceField(queryset=Club.objects.all(), required=True, widget=forms.Select(attrs={'class':'form-control'}))
         
 class AccountUpdateForm(UserChangeForm):
     

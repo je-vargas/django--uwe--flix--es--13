@@ -80,7 +80,7 @@ def register_clubrep_user(request):
     form_errors = None
     user_groups = None
     if request.method == "POST":
-        form = RegisterUserForm(request.POST)
+        form = RegisterClubRepForm(request.POST)
 
         if form.is_valid():
             # need to add unique value to club reps only
@@ -91,8 +91,9 @@ def register_clubrep_user(request):
             group = Group.objects.get(name='club rep')
             user_obj.groups.add(group)
 
+            club_obj = form.cleaned_data['club']
             account_obj = Account(
-                account_title=f"{user_obj.club.name}",
+                account_title=f"{club_obj.name}",
                 user = user_obj
             )
             account_obj.save()
@@ -104,7 +105,7 @@ def register_clubrep_user(request):
             error = list(form.errors.keys())
             form_errors = form.errors.get(error[0])
     else:
-        form = RegisterUserForm()
+        form = RegisterClubRepForm()
         user_groups = get_user_groups(request)
 
     return render(request, "registration/register.html", {
