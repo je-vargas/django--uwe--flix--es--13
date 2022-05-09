@@ -8,8 +8,7 @@ class Club(models.Model):
     street = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
     postcode = models.CharField(max_length=10)
-    discount = models.FloatField(null=True)
-    account_number = models.UUIDField(null=True)
+    account_number = models.UUIDField(null=False)
 
     def __str__(self):
         r_str = "{0}".format(self.name)

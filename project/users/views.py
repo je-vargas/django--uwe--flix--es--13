@@ -7,6 +7,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
 
+from bookings.models import Account
+
 from decorators import unauthenticated_user, allowed_users
 from access import * 
 from .forms import *
@@ -41,12 +43,18 @@ def register_user(request):
         form = RegisterUserForm(request.POST)
 
         if form.is_valid():
-            user_form = form.save()
+            user_obj = form.save()
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
 
             group = Group.objects.get(name='student')
-            user_form.groups.add(group)
+            user_obj.groups.add(group)
+
+            account_obj = Account(
+                account_title=f"{user_obj.first_name} {user_obj.last_name}",
+                user = user_obj
+            )
+            account_obj.save()
 
             user = authenticate(request, username=username, password=password)
             login(request, user)
@@ -67,7 +75,7 @@ def register_user(request):
         'form_errors' : form_errors
     })
 
-@allowed_users(['cinema manager'])
+# @allowed_users(['cinema manager'])
 def register_clubrep_user(request):
     form_errors = None
     user_groups = None
@@ -76,12 +84,18 @@ def register_clubrep_user(request):
 
         if form.is_valid():
             # need to add unique value to club reps only
-            user_form = form.save()
+            user_obj = form.save()
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
 
             group = Group.objects.get(name='club rep')
-            user_form.groups.add(group)
+            user_obj.groups.add(group)
+
+            account_obj = Account(
+                account_title=f"{user_obj.club.name}",
+                user = user_obj
+            )
+            account_obj.save()
 
             user = authenticate(request, username=username, password=password)
             messages.success(request, ("Registration Sucessfull!"))
@@ -108,7 +122,7 @@ def register_backoffice_user(request):
         form = RegisterUserForm(request.POST)
 
         if form.is_valid():
-            user_form = form.save()
+            user_obj = form.save()
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
             role = form.cleaned_data['role']
@@ -116,7 +130,7 @@ def register_backoffice_user(request):
             print(type(role))
 
             group = Group.objects.get(name=role)
-            user_form.groups.add(group)
+            user_obj.groups.add(group)
 
             user = authenticate(request, username=username, password=password)
             login(request, user)

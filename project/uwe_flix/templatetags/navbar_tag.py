@@ -1,6 +1,5 @@
 from django import template
 from django.contrib.auth.models import Group
-from access import get_user_groups
 
 register = template.Library()
 
