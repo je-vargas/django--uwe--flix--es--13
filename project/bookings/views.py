@@ -27,9 +27,17 @@ def getBookingForm(request):
     
     return NewBookingForm(request.POST or None) 
 
-def getBookings(request, pk): 
-    
-    return HttpResponse(f'needs implementing user: {pk}')
+def getStudentBookings(request, pk): 
+
+
+    account_table = get_object_or_404(Account, user=pk)
+    all_transaction = LoginTransaction.objects.all().filter(account=account_table.pk)
+
+    return render(request,'bookings/bookings_all.html', {
+            "transactions": all_transaction,
+            "user": account_table.user,
+            "account_name":account_table.account_title
+        })
 
 @allowed_users(['club rep', 'student'])
 def newBooking(request, pk):
@@ -104,7 +112,7 @@ def payment(request, pk):
                 )
             transaction_obj.save()
             
-            return redirect('bookings', user_id)
+            return redirect('student-bookings', user_id)
         else:
             return render(request, 'bookings/payment.html', {
                 "discount": account_obj.account_discount,
@@ -123,3 +131,6 @@ def payment(request, pk):
             "booking_with_discount": booking_with_discount,
             'form':form
             })
+
+def cancelBooking(request, pk):
+    return HttpResponse(f'needs implementing - booking {pk}')

@@ -23,7 +23,8 @@ class Account(models.Model):
     card_details = models.ForeignKey(CardDetails, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
-        return self.account_title + " " + self.account_discount
+        r_str = "{0} {1}".format(self.account_title, self.account_discount, )
+        return r_str
 
 class Booking(models.Model):
     ticket = models.ForeignKey(TicketType, on_delete=models.PROTECT)

@@ -82,11 +82,7 @@
           {% elif user|has_group:'club rep' or user|has_group:'student'%}
 
             <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Purchase Tickets</a>
-            </li>
-
-            <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Booked Tickets</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'student-bookings' user.pk%}">Booked Tickets</a>
             </li>
           {% endif %}
 

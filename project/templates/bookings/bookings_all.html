@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class='container'>
+        <h1 class="display-4 text-center">{{account_name}} Bookings</h1>
+        <br/>
+        {% for transaction in transactions %}
+            <div class="card">
+                <div class="card-body">
+                        <p class="card-text">
+                            <strong>Transaction ID:</strong> {{ transaction.id }}
+                        </p> 
+                        <p class="card-text">
+                            <strong>Payment made:</strong> {{ transaction.date_of_payment }}
+                        </p> 
+                        <p class="card-text">
+                            <strong>Tickets:</strong> {{ transaction.booking.number_of_tickets }} | {{transaction.booking.ticket.ticket}} | £{{transaction.booking.discount_cost}}
+                        </p> 
+                        <p class="card-text">
+                            <strong>Film Showing:</strong> {{ transaction.booking.showing.film.title }} <strong>on Screen:</strong>  {{ transaction.booking.showing.screen.number }}
+                            <strong>Playing on:</strong> {{ transaction.booking.showing.date }} <strong>at:</strong> {{ transaction.booking.showing.time }}
+                        </p> 
+                    </div>
+                    <div class="card-footer">
+                            <a href="{% url 'cancel-booking' transaction.booking.pk %}" class="btn btn-danger">Cancel Booking</a>
+                    </div>
+            </div>
+            <br/>
+        {% endfor %}
+    </div>
+
+
+{% endblock content %}
+
