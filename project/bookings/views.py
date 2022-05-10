@@ -37,6 +37,9 @@ def getBookingRedirect(request):
     
     return 'student-bookings'
 
+
+
+#* -------------- VIEWS -----------------
 @allowed_users(['student'])
 def getStudentBookings(request, pk): 
 
@@ -165,4 +168,9 @@ def payment(request, pk):
             })
 
 def cancelBooking(request, pk):
-    return HttpResponse(f'needs implementing - booking {pk}')
+    booking_redirect = booking_redirect = getBookingRedirect(request)    
+
+    booking_table_obj = get_object_or_404(Booking, pk=pk)
+    user_table_obj = request.user
+
+    return redirect(booking_redirect, user_table_obj.pk)

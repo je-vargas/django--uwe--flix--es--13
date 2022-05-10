@@ -33,9 +33,19 @@ class Booking(models.Model):
     discount_cost = models.FloatField(null=False, default=0)
     showing = models.ForeignKey('films.Showing', on_delete=models.PROTECT)
     is_discount_applied = models.BooleanField(null=True, default=False)
+    cancelled = models.BooleanField(default=False)
     
     def __str__(self):
         r_str = "{0} {1} {2} {3}".format(self.cost, self.number_of_tickets, self.ticket, self.showing)
+        return r_str
+class CancelledBookings(models.Model):
+    date = models.DateTimeField(null=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
+    approved = models.BooleanField(default=False)
+    
+    def __str__(self):
+        r_str = "{0} {1} {2} {3}".format(self.booking, self.cancelled, self.approved, self.user)
         return r_str
 
 class LoginTransaction(models.Model):
