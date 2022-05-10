@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="post-entry">
+        <p class='h4'>Booking for: {{ showing.film }}</p>
+        <p class='h5'>Screen: {{ showing.screen }}</p>
+        <p class='h5'>Seat Capacity: {{ showing.capacity }}</p>
+        <p class='h5'>Ticket Cost £ {{ showing.price }}</p>
+    </div>
+    <br>
+    <br>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <input type="submit" value="Book" class="btn btn-primary">
+    </form>
+{% endblock content %}
+

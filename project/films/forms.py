@@ -43,13 +43,15 @@ class NewShowingsForm(forms.ModelForm):
     
     class Meta:
         model = Showing
-        fields = ('film', 'screen','time', 'date')
+        fields = ('film', 'screen','time', 'date', 'price')
 
     def __init__(self, *args, **kwargs):
         super(NewShowingsForm, self).__init__(*args, **kwargs)
         self.fields['film'].widget.attrs['class'] = 'form-control'
         self.fields['time'].widget.attrs['class'] = 'form-control'
         self.fields['date'].widget.attrs['class'] = 'form-control'
+        self.fields['screen'].widget.attrs['class'] = 'form-control'
+        self.fields['price'].widget.attrs['class'] = 'form-control'
 
 class UpdateShowingForm(NewShowingsForm): pass
 
