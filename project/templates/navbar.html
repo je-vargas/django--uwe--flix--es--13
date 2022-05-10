@@ -79,7 +79,12 @@
               </ul>
             </li>
 
-          {% elif user|has_group:'club rep' or user|has_group:'student'%}
+          {% elif user|has_group:'club rep' %}
+
+            <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'club-bookings' user.pk%}">Booked Tickets</a>
+            </li>
+          {% elif user|has_group:'student'%}
 
             <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'student-bookings' user.pk%}">Booked Tickets</a>
@@ -98,16 +103,7 @@
                 <a class="nav-link" href="{% url 'register-student' %}">Register</a>
             </li>
         {% endif %}
-        
-
-        
       </ul>
-      {% comment %} maybe use this to search films by date {% endcomment %}
-      {% comment %} <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form> {% endcomment %}
-
       {% if user.is_authenticated %}
         {% if user|has_group:'admin' %}
           <a class="navbar-brand" href="">

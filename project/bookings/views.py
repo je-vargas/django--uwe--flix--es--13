@@ -27,8 +27,26 @@ def getBookingForm(request):
     
     return NewBookingForm(request.POST or None) 
 
+def getBookingRedirect(request):
+    if request.user.groups.exists():
+        user_role = get_user_groups(request)
+    
+        if 'club rep' in user_role : return 'club-bookings'
+    
+    return 'student-bookings'
+
 def getStudentBookings(request, pk): 
 
+    account_table = get_object_or_404(Account, user=pk)
+    all_transaction = LoginTransaction.objects.all().filter(account=account_table.pk)
+
+    return render(request,'bookings/bookings_all.html', {
+            "transactions": all_transaction,
+            "user": account_table.user,
+            "account_name":account_table.account_title
+        })
+
+def getClubBookings(request, pk): 
 
     account_table = get_object_or_404(Account, user=pk)
     all_transaction = LoginTransaction.objects.all().filter(account=account_table.pk)
@@ -76,6 +94,7 @@ def newBooking(request, pk):
 
 def payment(request, pk):
     
+    booking_redirect = getBookingRedirect(request)
     user_role = get_user_groups(request)
     user_id = request.user.pk
     
@@ -112,7 +131,7 @@ def payment(request, pk):
                 )
             transaction_obj.save()
             
-            return redirect('student-bookings', user_id)
+            return redirect(booking_redirect, user_id)
         else:
             return render(request, 'bookings/payment.html', {
                 "discount": account_obj.account_discount,
