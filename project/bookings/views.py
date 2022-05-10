@@ -3,10 +3,10 @@ from django.views.generic.base import TemplateView
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from django.forms.models import model_to_dict
-from django.contrib.auth.models import User
+from django.contrib import messages
 
 from decorators import allowed_users
 from films.models import Film, Showing
@@ -168,9 +168,16 @@ def payment(request, pk):
             })
 
 def cancelBooking(request, pk):
-    booking_redirect = booking_redirect = getBookingRedirect(request)    
+    booking_redirect = getBookingRedirect(request) 
 
     booking_table_obj = get_object_or_404(Booking, pk=pk)
-    user_table_obj = request.user
+    user_table_obj = get_object_or_404(User, pk=request.user.pk)
 
+    cancelled_booking_table_obj = CancelledBookings(
+        date=datetime.datetime.now(),
+        booking=booking_table_obj, 
+        user=user_table_obj, 
+    )
+    cancelled_booking_table_obj.save()
+    messages.success(request, "Cancelled booking request successfull, will be removed once approved")
     return redirect(booking_redirect, user_table_obj.pk)
