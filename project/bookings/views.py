@@ -28,6 +28,7 @@ def getBookingForm(request):
     return NewBookingForm(request.POST or None) 
 
 def getBookings(request, pk): 
+    
     return HttpResponse(f'needs implementing user: {pk}')
 
 @allowed_users(['club rep', 'student'])

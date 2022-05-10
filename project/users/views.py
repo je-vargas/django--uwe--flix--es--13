@@ -83,7 +83,6 @@ def register_clubrep_user(request):
         form = RegisterClubRepForm(request.POST)
 
         if form.is_valid():
-            # need to add unique value to club reps only
             user_obj = form.save()
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
@@ -97,6 +96,12 @@ def register_clubrep_user(request):
                 user = user_obj
             )
             account_obj.save()
+
+            club_user_table = ClubUsers(
+                user=user_obj,
+                club=club_obj
+            )
+            club_user_table.save()
 
             user = authenticate(request, username=username, password=password)
             messages.success(request, ("Registration Sucessfull!"))
