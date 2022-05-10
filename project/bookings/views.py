@@ -40,6 +40,24 @@ def getBookingRedirect(request):
 
 
 #* -------------- VIEWS -----------------
+@allowed_users(['cinema manager', 'staff'])
+def getBookings(request): 
+
+    all_transaction = LoginTransaction.objects.all()
+
+    return render(request,'bookings/bookings_all.html', {
+            "transactions": all_transaction,
+        })
+
+@allowed_users(['cinema manager', 'staff'])
+def getCancelledBookings(request): 
+
+    all_transaction = LoginTransaction.objects.filter(booking__cancelled = True)
+
+    return render(request,'bookings/bookings_all.html', {
+            "transactions": all_transaction,
+        })
+
 @allowed_users(['student'])
 def getStudentBookings(request, pk): 
 
@@ -173,11 +191,26 @@ def cancelBooking(request, pk):
     booking_table_obj = get_object_or_404(Booking, pk=pk)
     user_table_obj = get_object_or_404(User, pk=request.user.pk)
 
+    booking_table_obj.cancelled = True
+    booking_table_obj.save()
+
     cancelled_booking_table_obj = CancelledBookings(
         date=datetime.datetime.now(),
         booking=booking_table_obj, 
         user=user_table_obj, 
+        
     )
     cancelled_booking_table_obj.save()
     messages.success(request, "Cancelled booking request successfull, will be removed once approved")
     return redirect(booking_redirect, user_table_obj.pk)
+
+def approveBookingCancel(request, pk):
+    booking_redirect = getBookingRedirect(request) 
+
+    booking_table_obj = get_object_or_404(Booking, pk=pk)
+    cancelled_booking_table_obj = get_object_or_404(CancelledBookings, booking=booking_table_obj.pk)
+    cancelled_booking_table_obj.approved = True
+    cancelled_booking_table_obj.save()
+
+    messages.success(request, "Booking Cancelled")
+    return redirect('all-cancelled-bookings')
