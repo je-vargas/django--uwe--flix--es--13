@@ -29,8 +29,8 @@ class Account(models.Model):
 class Booking(models.Model):
     ticket = models.ForeignKey(TicketType, on_delete=models.PROTECT)
     number_of_tickets = models.IntegerField(null=False)
-    cost = models.IntegerField(null=False)
-    discount_cost = models.IntegerField(null=False, default=0)
+    cost = models.FloatField(null=False)
+    discount_cost = models.FloatField(null=False, default=0)
     showing = models.ForeignKey('films.Showing', on_delete=models.PROTECT)
     is_discount_applied = models.BooleanField(null=True, default=False)
     
