@@ -4,7 +4,7 @@ from django.core.validators import RegexValidator
 from django import forms
 from .models import Club
 
-BACKOFFICE_ROLES = (('cinema manager','Cinema Manager'), ('accounts manager', 'Accounts Manager'))
+BACKOFFICE_ROLES = (('cinema manager','Cinema Manager'), ('accounts manager', 'Accounts Manager'), ('staff', 'Staff'))
 PHONE_REGEX = RegexValidator('^(?:0|\+?44)\s?(?:\d\s?){9,11}$', message='Please enter a valid mobile number starting with +44... or 0... ')
 
 class DateCustomWidget(forms.DateInput):
