@@ -3,7 +3,11 @@
 
 {% block content %}
     <div class='container'>
-        <h1 class="display-4 text-center">{{account_name}} Bookings</h1>
+        {% if user|has_group:'club rep' %}
+            <h1 class="display-4 text-center">{{account_name}} Bookings</h1>
+        {% else %}
+            <h1 class="display-4 text-center">All Bookings</h1>
+        {% endif %}
         <br/>
         {% for transaction in transactions %}
             <div class="card">
@@ -27,9 +31,15 @@
                             <strong>Playing on:</strong> {{ transaction.booking.showing.date }} <strong>at:</strong> {{ transaction.booking.showing.time }}
                         </p> 
                     </div>
-                    <div class="card-footer">
-                            <a href="{% url 'cancel-booking' transaction.booking.pk %}" class="btn btn-danger">Cancel Booking</a>
-                    </div>
+                    {% if user|has_group:'club rep' or user|has_group:'student'%}
+                        <div class="card-footer">
+                                <a href="{% url 'cancel-booking' transaction.booking.pk %}" class="btn btn-danger">Cancel Booking</a>
+                        </div>
+                    {% elif user|has_group:'cinema manager' or user|has_group:'staff'%}
+                        <div class="card-footer">
+                                <a href="{% url 'approve-booking-cancelled' transaction.booking.pk %}" class="btn btn-info">Approve Cancellation</a>
+                        </div>
+                    {% endif %}
             </div>
             <br/>
         {% endfor %}
