@@ -1,19 +1,31 @@
 {% extends 'base.html' %}
 
+{% load navbar_tag %}
+
 {% block content %}
     <div class='container'>
-        <h1 class="display-4 text-center">Films</h1>
+        <h1 class="display-4 text-center">Showings</h1>
         <br/>
-        {% for film in all_films %}
+        
+        {% for showing in all_showings %}
             <div class="card">
                 <p class="card-header lead ">Book your ticket now!</p>
                     <div class="card-body">
-                        <h5 class="card-title">{{ film.title }}</h5>
-                        <p class="card-text">{{ film.film_description }}.</p>
-                        <p class="card-text">{{ film.duration }}.</p>
+                        <h5 class="card-title"> Film {{ showing.film }}</h5>
+                        <p class="card-text"> Screen {{ showing.screen }}</p>
+                        <p class="card-text">Presenting {{ showing.date }}</p>
+                        <p class="card-text">Time {{ showing.time }}</p>
+                        <p class="card-text"> Seats Left {{ showing.capacity }}</p>
+                        <p class="card-text"> Film Cost £{{ showing.price }}</p>
                     </div>
                     <div class="card-footer">
-                            <a href="{% url 'film-details' film.pk %}" class="btn btn-primary">More details</a>
+                        {% if user|has_group:'club rep' or user|has_group:'student'%}
+                            <a href="{% url 'new-booking' showing.pk %}" class="btn btn-primary">Book Ticket</a>
+                            
+                        {% else %}
+                            <a href="{% url 'showing-details' showing.pk %}" class="btn btn-primary">More details</a>
+                        {% endif %}
+
                     </div>
             </div>
             <br/>
