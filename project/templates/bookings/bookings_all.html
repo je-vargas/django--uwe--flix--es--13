@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load navbar_tag %}
 
 {% block content %}
     <div class='container'>
@@ -7,6 +8,11 @@
         {% for transaction in transactions %}
             <div class="card">
                 <div class="card-body">
+                        {% if user|has_group:'club rep' %}
+                            <p class="card-text">
+                                <strong>Transaction made by club rep:</strong> {{ transaction.account.user.first_name }} {{ transaction.account.user.last_name }}
+                            </p> 
+                        {% endif %}
                         <p class="card-text">
                             <strong>Transaction ID:</strong> {{ transaction.id }}
                         </p> 

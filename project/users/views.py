@@ -75,7 +75,7 @@ def register_user(request):
         'form_errors' : form_errors
     })
 
-# @allowed_users(['cinema manager'])
+@allowed_users(['cinema manager'])
 def register_clubrep_user(request):
     form_errors = None
     user_groups = None

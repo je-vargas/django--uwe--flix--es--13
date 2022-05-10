@@ -6,9 +6,11 @@ from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib.auth.models import Group, User
 from django.utils.decorators import method_decorator
 from django.forms.models import model_to_dict
+from django.contrib.auth.models import User
 
 from decorators import allowed_users
 from films.models import Film, Showing
+from users.models import ClubUsers
 from .models import *
 from .forms import *
 from access import * 
@@ -35,6 +37,7 @@ def getBookingRedirect(request):
     
     return 'student-bookings'
 
+@allowed_users(['student'])
 def getStudentBookings(request, pk): 
 
     account_table = get_object_or_404(Account, user=pk)
@@ -46,15 +49,25 @@ def getStudentBookings(request, pk):
             "account_name":account_table.account_title
         })
 
+@allowed_users(['club rep'])
 def getClubBookings(request, pk): 
 
-    account_table = get_object_or_404(Account, user=pk)
-    all_transaction = LoginTransaction.objects.all().filter(account=account_table.pk)
+    all_transaction = LoginTransaction.objects.none()
+    account_title = None
+
+    user_table = get_object_or_404(User, pk=pk)
+    club_link = get_object_or_404(ClubUsers, user=pk)
+    account_table = Account.objects.filter(account_title = club_link.club.name)
+    for user_in_account in account_table: 
+        account_title = user_in_account.account_title
+        all_transaction = all_transaction.union(LoginTransaction.objects.all().filter(account=user_in_account.id))
+    
+    
 
     return render(request,'bookings/bookings_all.html', {
             "transactions": all_transaction,
-            "user": account_table.user,
-            "account_name":account_table.account_title
+            "user": user_table,
+            "account_name":account_title
         })
 
 @allowed_users(['club rep', 'student'])
